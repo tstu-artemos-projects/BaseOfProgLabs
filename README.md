@@ -5,7 +5,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/tstu-artemos-projects/verevka-lab1?style=for-the-badge&logo=github&logoColor=FFFFFF)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/tstu-artemos-projects/verevka-lab1?style=for-the-badge&logo=dotnet&color=8B00FF&logoColor=FFFFFF)
-![GitHub branch status](https://img.shields.io/github/checks-status/tstu-artemos-projects/verevka-lab1/main?style=for-the-badge&logo=githubactions&logoColor=FFFFFF)
+![GitHub branch status](https://img.shields.io/github/checks-status/tstu-artemos-projects/verevka-lab1/master?style=for-the-badge&logo=githubactions&logoColor=FFFFFF)
 ![Last Commit](https://img.shields.io/github/last-commit/tstu-artemos-projects/verevka-lab1?style=for-the-badge&logo=git&logoColor=FFFFFF)  
 
 </div>
