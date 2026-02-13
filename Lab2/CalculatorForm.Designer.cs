@@ -149,9 +149,10 @@
             InputMathExpression.Location = new Point(610, 63);
             InputMathExpression.Name = "InputMathExpression";
             InputMathExpression.Size = new Size(344, 39);
+            InputMathExpression.KeyPress += ValidationKeyPress;
+            InputMathExpression.KeyDown += EnterPress;
 
             CalculatorTabPage.Controls.Add(InputMathExpression);
-
 
             ResultLabel = new();
             ResultLabel.AutoSize = true;
