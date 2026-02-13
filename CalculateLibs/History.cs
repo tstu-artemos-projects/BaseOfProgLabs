@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CalculateLibs
+﻿namespace CalculateLibs
 {
     /// <summary>
     /// Элемент в истории вычислений, содержащий выражение и результат. Позволяет сохранять и отображать историю вычислений в удобном формате.
