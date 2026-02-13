@@ -1,4 +1,4 @@
-using Lab1Libs;
+using NumberBaseLibs;
 using System.ComponentModel; // “ам Convertation, который мы будем использовать дл€ конвертации чисел из одной системы счислени€ в другую
 
 namespace Lab1

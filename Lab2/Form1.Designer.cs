@@ -1,6 +1,6 @@
-﻿namespace Lab_2
+﻿namespace Lab2
 {
-    partial class Calculator_form
+    partial class CalculatorForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Calculator_form));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalculatorForm));
             Calculator_tabControl = new TabControl();
             Calculator_tabPage = new TabPage();
             InputOutput_panel = new Panel();

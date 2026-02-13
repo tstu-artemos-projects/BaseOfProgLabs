@@ -1,8 +1,8 @@
-namespace Lab_2
+namespace Lab2
 {
-    public partial class Calculator_form : Form
+    public partial class CalculatorForm : Form
     {
-        public Calculator_form()
+        public CalculatorForm()
         {
             InitializeComponent();
         }
