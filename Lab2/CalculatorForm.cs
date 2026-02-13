@@ -39,9 +39,38 @@ namespace Lab2
             }
         }
 
+        private void ValidationKeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Строка со всеми разрешенными символами
+            string allowedSymbols = "0123456789()+-*/.,\b";
+
+            // Если символа нет в списке разрешенных, отменяем ввод
+            if (allowedSymbols.IndexOf(e.KeyChar) == -1)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void EnterPress(object sender, KeyEventArgs e)
+        {
+            if  (e.KeyCode == Keys.Enter)
+                CalculateExpression(sender, e);
+        }
+
         private void SetHistoryOutput(IReadOnlyList<HistoryElement> history)
         {
-            HistoryOutput.Text = string.Join(Environment.NewLine, history.Select(h => $"{h.Expression} = {h.Result:F2}").Reverse());
+            HistoryOutput.Text = string.Join(
+                Environment.NewLine,
+                history
+                    .Select(h => $"{h.Expression} = {h.Result:F2}")
+                    .Reverse() // Разворачиваем порядок, чтобы последние элементы были сверху
+            );
+        }
+
+        private void Clear(object sender, EventArgs e)
+        {
+            ResultInput.Text = string.Empty;
+            InputMathExpression.Text = string.Empty;
         }
 
         private void ShowError(Exception ex)
