@@ -1,4 +1,4 @@
-namespace Lab_2
+namespace Lab2
 {
     public partial class CalculatorForm : Form
     {
