@@ -44,6 +44,12 @@ namespace Lab2
             HistoryOutput.Text = string.Join(Environment.NewLine, history.Select(h => $"{h.Expression} = {h.Result:F2}").Reverse());
         }
 
+        private void Clear(object sender, EventArgs e)
+        {
+            ResultInput.Text = string.Empty;
+            InputMathExpression.Text = string.Empty;
+        }
+
         private void ShowError(Exception ex)
         {
             string message, title;

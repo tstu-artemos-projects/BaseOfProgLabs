@@ -173,7 +173,7 @@
 
         private void InitializationCalculatorButtons()
         {
-            NumZeroButton = CreateCalculatorButton("NumZeroButton", new Point(493, 203), "0", null);
+            NumZeroButton = CreateCalculatorButton("NumZeroButton", new Point(493, 94), "0", null); // 94
             NumOneButton = CreateCalculatorButton("NumOneButton", new Point(25, 308), "1", null);
             NumTwoButton = CreateCalculatorButton("NumTwoButton", new Point(188, 308), "2", null);
             NumThreeButton = CreateCalculatorButton("NumThreeButton", new Point(335, 308), "3", null);
@@ -184,8 +184,8 @@
             NumEightButton = CreateCalculatorButton("NumEightButton", new Point(188, 94), "8", null);
             NumNineButton = CreateCalculatorButton("NumNineButton", new Point(335, 94), "9", null);
 
-            OpenBracketButton = CreateCalculatorButton("OpenBracketButton", new Point(493, 94), "(", null);
-            CloseBracketButton = CreateCalculatorButton("CloseBracketButton", new Point(675, 94), ")", null);
+            OpenBracketButton = CreateCalculatorButton("OpenBracketButton", new Point(675, 94), "(", null); // 675
+            CloseBracketButton = CreateCalculatorButton("CloseBracketButton", new Point(821, 94), ")", null); // 821
 
             MultiplicationButton = CreateCalculatorButton("MultiplicationButton", new Point(675, 203), "×", "*");
             DivisionButton = CreateCalculatorButton("DivisionButton", new Point(675, 308), "÷", "/");
@@ -195,7 +195,7 @@
             // EqualityButton (тут другая логика, напишу так)
             EqualityButton = new();
 
-            EqualityButton.Location = new Point(821, 94);
+            EqualityButton.Location = new Point(493, 203); // 493, 203
             EqualityButton.Name = "EqualityButton";
             EqualityButton.Size = new Size(118, 77);
             EqualityButton.TabIndex = 22;
@@ -204,6 +204,19 @@
             EqualityButton.Click += CalculateExpression;
 
             InputOutputCalucatorPanel.Controls.Add(EqualityButton);
+
+            // ClearButton (тут другая логика, напишу так)
+            ClearButton = new();
+
+            ClearButton.Location = new Point(493, 308); // 675, 203
+            ClearButton.Name = "ClearButton";
+            ClearButton.Size = new Size(118, 77);
+            ClearButton.TabIndex = 22;
+            ClearButton.Text = "CE";
+            ClearButton.UseVisualStyleBackColor = true;
+            ClearButton.Click += Clear;
+
+            InputOutputCalucatorPanel.Controls.Add(ClearButton);
         }
 
         
@@ -243,6 +256,7 @@
         private Button SubtractionButton;
         private Button AdditionButton;
 
+        private Button ClearButton;
         private Button EqualityButton;
 
         // История операций
