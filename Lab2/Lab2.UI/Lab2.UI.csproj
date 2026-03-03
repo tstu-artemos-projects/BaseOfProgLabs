@@ -6,10 +6,11 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Lab2.UI</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CalculateLibs\Lab2.CalculateLibs.csproj" />
+    <ProjectReference Include="..\Lab2.CalculateLibs\Lab2.CalculateLibs.csproj" />
   </ItemGroup>
 
   <ItemGroup>
