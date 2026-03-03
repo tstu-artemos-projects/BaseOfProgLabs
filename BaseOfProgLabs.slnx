@@ -8,7 +8,7 @@
     <Project Path="Lab2\Lab2.UI\Lab2.UI.csproj" />
   </Folder>
   <Folder Name="/Lab3/">
-    <Project Path="Lab3\Lab3.BookStoreLibraryTests\Lab3.BookStoreLibraryTests.csproj" />
+    <Project Path="Lab3\Lab3.BookStoreLibrary.Tests\Lab3.BookStoreLibrary.Tests.csproj" />
     <Project Path="Lab3\Lab3.BookStoreLibrary\Lab3.BookStoreLibrary.csproj" />
   </Folder>
 </Solution>
