@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Bible_form_lab_3.Properties {
+namespace Lab3.UI.Properties {
     using System;
     
     
