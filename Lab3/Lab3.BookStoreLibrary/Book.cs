@@ -36,20 +36,24 @@ public class Book
         Price = price;
     }
 
-    public static Book GenerateRandomBook()
+    /// <summary>
+    /// Статический метод создания случайной книги
+    /// </summary>
+    /// <param name="authors">Массив авторов для случайного выбора</param>
+    /// <param name="bookNames">Массив названий книг для случайного выбора</param>
+    /// <param name="genres">Массив жанров для случайного выбора</param>
+    /// <returns>Объект книги с случайными параметрами</returns>
+    public static Book GenerateRandomBook(
+        string[] bookNames,
+        string[] authors,
+        string[] genres
+    )
     {
-        /// <summary>
-        /// Статический метод создания случайной книги
-        /// </summary>
-        /// <returns>Объект книги с случайными параметрами</returns>
         var random = new Random();
-        string[] book_name = ReadBase("BookName");
-        string[] authors = ReadBase("Authors");
-        string[] genre = ReadBase("Genre");
         return new Book(
-            title: book_name[random.Next(0, book_name.Length)],
+            title: bookNames[random.Next(0, bookNames.Length)],
             author: authors[random.Next(0, authors.Length)],
-            genre: genre[random.Next(0, genre.Length)],
+            genre: genres[random.Next(0, genres.Length)],
             pageCount: random.Next(100, 2000),
             price: random.Next(100, 5000)
         );
@@ -62,20 +66,7 @@ public class Book
     /// <returns>Сумма продажи</returns>
     public decimal Sell(Bookshelf shelf)
     {
-        shelf.RemoveBook(Title);
+        shelf.RemoveBook(this);
         return Price;
-    }
-
-    /// <summary>
-    /// Статический метод чтения базы данных из файла
-    /// </summary>
-    /// <param name="file_name">Имя файла с данными</param>
-    /// <returns>Массив строк из файла</returns>
-    public static string [] ReadBase(string file_name)
-    {
-        StreamReader f = new StreamReader(file_name);
-        string s = f.ReadToEnd();
-        string[] buf = s.Split("\n");
-        return buf;
     }
 }

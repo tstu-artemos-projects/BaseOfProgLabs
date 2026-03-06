@@ -124,7 +124,6 @@ partial class BibleForm
         tabPageMain.Size = new Size(460, 290);
         tabPageMain.TabIndex = 0;
         tabPageMain.Text = "Главное меню";
-        tabPageMain.Click += tabPageMain_Click;
         // 
         // btnSupport
         // 
@@ -457,7 +456,6 @@ partial class BibleForm
         buttonSearch2.TabIndex = 19;
         buttonSearch2.Text = "Поиск";
         buttonSearch2.UseVisualStyleBackColor = true;
-        buttonSearch2.Click += button1_Click;
         // 
         // label2
         // 
@@ -636,7 +634,6 @@ partial class BibleForm
         Name = "FormManager";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "Ulitka Soft - Библиотечный менеджер";
-        Load += FormManager_Load;
         tabControlNewBook.ResumeLayout(false);
         tabPageMain.ResumeLayout(false);
         tabPageMain.PerformLayout();
