@@ -267,6 +267,7 @@ partial class BibleForm
         numericUpDownPrice.Name = "numericUpDownPrice";
         numericUpDownPrice.Size = new Size(48, 23);
         numericUpDownPrice.TabIndex = 11;
+        numericUpDownPrice.Maximum = new decimal(new int[] { 9000000, 0, 0, 0 });
         // 
         // labelPrice
         // 
@@ -292,6 +293,7 @@ partial class BibleForm
         numericUpDownPages.Name = "numericUpDownPages";
         numericUpDownPages.Size = new Size(48, 23);
         numericUpDownPages.TabIndex = 8;
+        numericUpDownPages.Maximum = new decimal(new int[] { 9000000, 0, 0, 0 });
         // 
         // labelType
         // 
