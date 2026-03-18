@@ -24,4 +24,8 @@
       <ProjectReference Include="..\Lab3.BookStoreLibrary\Lab3.BookStoreLibrary.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="README.md" />
+    </ItemGroup>
+
 </Project>

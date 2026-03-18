@@ -51,7 +51,7 @@
    ```
 4. ЗАПУСКАЙТЕ: ⚡ (Даже не ждите сборки, просто жмите!)
    ```pwsh
-   dotnet run --project .\Lab{номер}\UI
+   dotnet run --project .\Lab{номер}\Lab{номер}.UI
    ```
 
    ---

@@ -15,53 +15,84 @@ jobs:
       packages: write
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 10.0.x
+      - uses: actions/checkout@v4
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
 
-    - name: Publish WinForms App
-      run: dotnet publish -c Release -o ./publish
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Test
-      run: dotnet test -c Release --no-build --verbosity normal
+      - name: Publish WinForms App
+        run: dotnet publish -c Release -o ./publish
 
-    - name: Zip Artifact
-      shell: pwsh
-      run: Compress-Archive -Path ./publish/* -DestinationPath ./base-of-progs-windows-amd64.zip
+      - name: Test with Coverage
+        run: dotnet test -c Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
 
-    - name: Create Release
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v2
-      with:
-        files: base-of-progs-windows-amd64.zip
-        name: Release ${{ github.ref_name }}
-        body: |
-          Автоматический релиз версии ${{ github.ref_name }}
-          Все тесты пройдены успешно.
-        draft: false
-        prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # --- НОВЫЙ ШАГ: Генерация HTML отчета ---
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
-    - name: Update Latest Release
-      if:   "!startsWith(github.ref, 'refs/tags/')"
-      uses: softprops/action-gh-release@v2
-      with:
-        files: base-of-progs-windows-amd64.zip
-        tag_name: latest
-        name: Latest Build
-        body: |
-          Автоматическая сборка из ветки master.
-          Дата обновления: ${{ github.event.head_commit.timestamp }}
-          Последний коммит: ${{ github.sha }}
-        draft: false
-        prerelease: false
-        make_latest: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate HTML Report
+        shell: pwsh
+        run: |
+          # Ищем путь к файлу покрытия
+          $coverageFile = Get-ChildItem -Recurse -Filter "coverage.cobertura.xml" | Select-Object -First 1 -ExpandProperty FullName
+          # Генерируем HTML отчет в папку ./coveragereport
+          reportgenerator "-reports:$coverageFile" "-targetdir:./coveragereport" "-reporttypes:Html"
+
+      - name: Zip Artifacts
+        shell: pwsh
+        run: |
+          Copy-Item -Path "Lab3/Lab3.UI/*.txt" -Destination "./publish" -ErrorAction SilentlyContinue
+          
+          # Основной бинарник
+          Compress-Archive -Path ./publish/* -DestinationPath ./base-of-progs-windows-amd64.zip
+          
+          # Архивируем HTML отчет (целую папку)
+          Compress-Archive -Path ./coveragereport/* -DestinationPath ./coverage-html.zip
+          
+          # XML файл (на всякий случай оставляем)
+          $xmlFile = Get-ChildItem -Recurse -Filter "coverage.cobertura.xml" | Select-Object -First 1
+          if ($xmlFile) {
+              Compress-Archive -Path $xmlFile.FullName -DestinationPath ./code-coverage-xml.zip
+          }
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            base-of-progs-windows-amd64.zip
+            coverage-html.zip
+            code-coverage-xml.zip
+          name: Release ${{ github.ref_name }}
+          body: |
+            Автоматический релиз версии ${{ github.ref_name }}
+            Включен визуальный HTML-отчет о покрытии.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Latest Release
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            base-of-progs-windows-amd64.zip
+            coverage-html.zip
+            code-coverage-xml.zip
+          tag_name: latest
+          name: Latest Build
+          body: |
+            Автоматическая сборка из ветки master.
+            Дата обновления: ${{ github.event.head_commit.timestamp }}
+            Отчет о покрытии тестами доступен в архиве coverage-html.zip.
+          draft: false
+          prerelease: false
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

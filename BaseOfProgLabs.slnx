@@ -10,5 +10,6 @@
   <Folder Name="/Lab3/">
     <Project Path="Lab3\Lab3.BookStoreLibrary.Tests\Lab3.BookStoreLibrary.Tests.csproj" />
     <Project Path="Lab3\Lab3.BookStoreLibrary\Lab3.BookStoreLibrary.csproj" />
+    <Project Path="Lab3\Lab3.UI\Lab3.UI.csproj" />
   </Folder>
 </Solution>
