@@ -13,6 +13,22 @@ public class BookStore
     // Максимальное количество полок в магазине
     public int MaxShelves { get; private set; }
 
+
+    // очередь книг, ожидающих проверки (поставки)
+    public Queue<Book> IncomingBooks { get; } = new();
+
+    // счётчик неудовлетворённых клиентов
+    public int UnsatisfiedCustomersCount { get; private set; } = 0;
+
+    // список известных пар книга-автор (база данных)
+    private readonly HashSet<(string Title, string Author)> _knownBooks = new();
+
+    // События для уведомления формы (для Game Over)
+    public event Action? OnBalanceZero;
+    public event Action? OnUnsatisfiedLimitReached;
+
+
+
     public IReadOnlyCollection<Bookshelf> Shelves => _shelves.AsReadOnly();
 
     /// <summary>
@@ -50,14 +66,6 @@ public class BookStore
         return _shelves.Remove(shelf);
     }
 
-    ///// <summary>
-    ///// Метод получения всех полок магазина
-    ///// </summary>
-    ///// <returns>Коллекция полок</returns>
-    //public IEnumerable<Bookshelf> GetShelves()
-    //{
-    //    return _shelves;
-    //}
 
     /// <summary>
     /// Метод обработки продажи книги
@@ -71,6 +79,7 @@ public class BookStore
         decimal saleAmount = book.Sell(shelf);
         // Обновление баланса магазина
         Balance += saleAmount;
+
 
     }
     /// <summary>
@@ -86,4 +95,58 @@ public class BookStore
         throw new InvalidDataException($"Книга с названием '{book.Title}' не найдена ни на одной полке магазина");
     }
 
+    /// <summary>
+    /// Загрузка базы данных известных книг из файла
+    /// </summary>
+    public void LoadBookDatabase(string filePath)
+    {
+        if (!File.Exists(filePath)) return;
+
+        foreach (var line in File.ReadLines(filePath))
+        {
+            var parts = line.Split(',');
+            if (parts.Length >= 2)
+            {
+                _knownBooks.Add((parts[0].Trim(), parts[1].Trim()));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Сохранение новой пары книга-автор в базу данных
+    /// </summary>
+    public void SaveBookToDatabase(string title, string author, string filePath)
+    {
+        if (_knownBooks.Contains((title, author))) return;
+
+        _knownBooks.Add((title, author));
+        File.AppendAllText(filePath, $"{title},{author}\n");
+    }
+
+    /// <summary>
+    /// Проверка на плагиат 
+    /// </summary>
+    public bool IsPlagiarism(string title, string author)
+    {
+        // Плагиат: такое название есть в базе, но с другим автором
+        foreach (var (dbTitle, dbAuthor) in _knownBooks)
+        {
+            if (string.Equals(dbTitle, title, StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(dbAuthor, author, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool OrderBook(Book book)
+    {
+        if (Balance < book.Price)
+            return false;
+
+        Balance -= book.Price;
+        IncomingBooks.Enqueue(book);
+        return true;
+    }
 }
