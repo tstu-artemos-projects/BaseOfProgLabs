@@ -18,13 +18,13 @@ namespace Lab3.BookStoreLibrary
         public bool IsEmpty => _queue.Count == 0;
         public int MaxCapacity => _maxCapacity;
 
-        public event Action<Customer>? CustomerAdded;//для взаимодействия с формой
+        public event Action<Customer>? CustomerAdded; // для взаимодействия с формой
         public event Action<Customer>? CustomerRemoved;
         public event Action? UnsatisfiedLimitReached;
         public event Action? QueueLimitReached;
-        //Когда добавился покупатель форма обновит отображение очереди
-        //Когда очередь переполнена QueueLimitReached то конец
-        //Когда 3 недовольных клиента UnsatisfiedLimitReached то конец
+        // Когда добавился покупатель форма обновит отображение очереди
+        // Когда очередь переполнена QueueLimitReached то конец
+        // Когда 3 недовольных клиента UnsatisfiedLimitReached то конец
 
 
         /// <param name="maxCapacity">Макс. длина очереди (3-5 в зависимости от сложности)</param>
@@ -38,7 +38,8 @@ namespace Lab3.BookStoreLibrary
             _unsatisfiedCount = 0;
         }
 
-        // управление очередью 
+        // управление очередью
+
         /// <summary>
         /// Добавить покупателя в очередь.
         /// Возвращает false, если очередь переполнена (условие проигрыша).
@@ -82,8 +83,8 @@ namespace Lab3.BookStoreLibrary
         public bool ServeCustomer(Customer customer)
         {
             if (customer == null) return false;        
-            if (!_queue.Contains(customer)) return false;// Проверяем, что покупатель действительно в очереди            
-            var tempQueue = new Queue<Customer>();// Удаляем конкретного покупателя (т.к. Queue не поддерживает Remove)
+            if (!_queue.Contains(customer)) return false; // Проверяем, что покупатель действительно в очереди            
+            var tempQueue = new Queue<Customer>(); // Удаляем конкретного покупателя (т.к. Queue не поддерживает Remove)
             bool found = false;
 
             while (_queue.Count > 0)
@@ -100,7 +101,7 @@ namespace Lab3.BookStoreLibrary
                     tempQueue.Enqueue(c);
                 }
             }
-            while (tempQueue.Count > 0)//восстановление очереди
+            while (tempQueue.Count > 0) //восстановление очереди
                 _queue.Enqueue(tempQueue.Dequeue());
 
             return found;
