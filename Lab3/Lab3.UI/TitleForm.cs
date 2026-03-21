@@ -1,4 +1,6 @@
-﻿namespace Lab3.UI
+﻿using Lab3.BookStoreLibrary;
+
+namespace Lab3.UI
 {
     public partial class TitleForm : Form
     {
