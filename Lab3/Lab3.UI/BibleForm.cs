@@ -26,6 +26,8 @@ public partial class BibleForm : Form
     public readonly string[] RandomAuthorBase;
     public readonly string[] RandomBookNameBase;
 
+    private readonly Difficulty _difficulty;
+
     private void buttonGenerate_Click(object sender, EventArgs e)
     {
         if (RandomGenreBase.Length == 0 || RandomAuthorBase.Length == 0 || RandomBookNameBase.Length == 0) return;
@@ -55,6 +57,7 @@ public partial class BibleForm : Form
             RandomBookNameBase = Array.Empty<string>();
         }
         _store = new BookStore(MAX_SHELVES);
+        _difficulty = difficulty;
 
         InitializeComponent();
 
