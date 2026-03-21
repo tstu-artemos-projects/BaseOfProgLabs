@@ -32,12 +32,28 @@ public class Bookshelf
     /// Метод добавления книги на полку
     /// </summary>
     /// <param name="book">Книга для добавления</param>
+    /// <summary>
+    /// Метод добавления книги на полку 
+    /// </summary>
     public void AddBook(Book book)
     {
-        if (book.Genre != Genre)
-            throw new ArgumentException($"Невозможно добавить книгу жанра {book.Genre} на полку жанра {Genre}", nameof(book));
+        // если полка пустая, она принимает любой жанр и "фиксирует" его
+        if (string.IsNullOrEmpty(Genre))
+        {
+            Genre = book.Genre;
+        }
+        // Проверка жанра только если полка уже имеет зафиксированный жанр
+        else if (book.Genre != Genre)
+        {
+            throw new ArgumentException(
+                $"Невозможно добавить книгу жанра '{book.Genre}' на полку жанра '{Genre}'",
+                nameof(book));
+        }
+
         if (CurrentCount >= Capacity)
-            throw new InvalidOperationException($"Полка жанра {Genre} достигла своей максимальной вместимости");
+            throw new InvalidOperationException(
+                $"Полка жанра '{Genre}' достигла максимальной вместимости");
+
         _books.Add(book);
     }
 
@@ -67,32 +83,23 @@ public class Bookshelf
         return candidate;
     }
 
-    ///// <summary>
-    ///// Метод получения всех книг с сортировкой по названию
-    ///// </summary>
-    ///// <returns>Отсортированный список книг</returns>
-    //public IEnumerable<Book> GetAllBooks()
-    //{
-    //    return _books.OrderBy(b => b.Title);
-    //}
-
     /// <summary>
-    /// Метод удаления книги по названию
+    /// Метод удаления книги с полки
     /// </summary>
-    /// <param name="book">Удаляемая книга</param>
-    /// <returns>true если книга удалена успешно, иначе false</returns>
     public bool RemoveBook(Book book)
     {
-        return _books.Remove(book);
+        bool removed = _books.Remove(book);
+
+        //  если полка стала пустой, сбрасываем привязку к жанру
+        if (removed && _books.Count == 0)
+        {
+            Genre = string.Empty; // или null, в зависимости от вашей логики
+        }
+
+        return removed;
     }
 
-    ///// <summary>
-    ///// Метод проверки наличия книги на полке
-    ///// </summary>
-    ///// <param name="book">Книга для проверки</param>
-    ///// <returns>true если книга есть на полке, иначе false</returns>
-    //public bool ContainsBook(Book book)
-    //{
-    //    return _books.Contains(book);
-    //}
+
+
+
 }

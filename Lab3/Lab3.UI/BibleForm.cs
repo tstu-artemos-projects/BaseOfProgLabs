@@ -19,18 +19,42 @@ public partial class BibleForm : Form
     }
 
     private readonly BookStore _store;
-    private const int MAX_SHELVES = 5;
-    private const int MAX_BOOKS_IN_SHELVES = 5;
+    private const int MaxShelves = 5;
+    private const int MaxBooksInShelves = 5;
 
-    public readonly string[] RandomGenreBase;
-    public readonly string[] RandomAuthorBase;
-    public readonly string[] RandomBookNameBase;
+    private readonly string[] _randomGenreBase;
+    private readonly string[] _randomAuthorBase;
+    private readonly string[] _randomBookNameBase;
+
+    private readonly Difficulty _difficulty;
+    
+    public BibleForm(Difficulty difficulty)
+    {
+        try {
+            _randomGenreBase = ReadBase("Genre.txt");
+            _randomAuthorBase = ReadBase("Authors.txt");
+            _randomBookNameBase = ReadBase("BookName.txt");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            _randomGenreBase = Array.Empty<string>();
+            _randomAuthorBase = Array.Empty<string>();
+            _randomBookNameBase = Array.Empty<string>();
+        }
+        _store = new BookStore(MaxShelves);
+        _difficulty = difficulty;
+
+        InitializeComponent();
+
+        comboBoxType.Items.AddRange(_randomGenreBase);
+    }
 
     private void buttonGenerate_Click(object sender, EventArgs e)
     {
-        if (RandomGenreBase.Length == 0 || RandomAuthorBase.Length == 0 || RandomBookNameBase.Length == 0) return;
+        if (_randomGenreBase.Length == 0 || _randomAuthorBase.Length == 0 || _randomBookNameBase.Length == 0) return;
 
-        var randomBook = Book.GenerateRandomBook(RandomBookNameBase, RandomAuthorBase, RandomGenreBase);
+        var randomBook = Book.GenerateRandomBook(_randomBookNameBase, _randomAuthorBase, _randomGenreBase);
 
         textBoxTitleBook.Text = randomBook.Title;
         textBoxAutor.Text = randomBook.Author;
@@ -38,27 +62,6 @@ public partial class BibleForm : Form
 
         numericUpDownPages.Value = Math.Clamp(randomBook.PageCount, numericUpDownPages.Minimum, numericUpDownPages.Maximum);
         numericUpDownPrice.Value = Math.Clamp(randomBook.Price, numericUpDownPrice.Minimum, numericUpDownPrice.Maximum);
-    }
-
-    public BibleForm()
-    {
-        try {
-            RandomGenreBase = ReadBase("Genre.txt");
-            RandomAuthorBase = ReadBase("Authors.txt");
-            RandomBookNameBase = ReadBase("BookName.txt");
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            RandomGenreBase = Array.Empty<string>();
-            RandomAuthorBase = Array.Empty<string>();
-            RandomBookNameBase = Array.Empty<string>();
-        }
-        _store = new BookStore(MAX_SHELVES);
-
-        InitializeComponent();
-
-        comboBoxType.Items.AddRange(RandomGenreBase);
     }
 
     private void btnNewBook_Click(object sender, EventArgs e)
@@ -128,7 +131,7 @@ public partial class BibleForm : Form
             _store.RemoveShelf(emptyShelf);
             MessageBox.Show($"Лимит жанров исчерпан. Пустой шкаф переназначен под жанр {genre}");
 
-            var replacedShelf = new Bookshelf(genre, MAX_BOOKS_IN_SHELVES);
+            var replacedShelf = new Bookshelf(genre, MaxBooksInShelves);
             _store.AddShelf(replacedShelf);
             return replacedShelf;
         }

@@ -58,10 +58,6 @@ partial class BibleForm
         labelDobNewBook = new Label();
         tabPageMarket = new TabPage();
         groupBoxSearch = new GroupBox();
-        groupBoxDetails = new GroupBox();
-        btnSell = new Button();
-        btnBackToSearch = new Button();
-        labelInfo = new Label();
         textBoxSearchID = new TextBox();
         buttonSearch2 = new Button();
         label2 = new Label();
@@ -76,11 +72,42 @@ partial class BibleForm
         labelBalance = new Label();
         labelBalanceUsed = new Label();
         buttonReturn2 = new Button();
+        groupBoxDetails = new GroupBox();
+        btnSell = new Button();
+        btnBackToSearch = new Button();
+        labelInfo = new Label();
         labelMarket = new Label();
         tabPageSupport = new TabPage();
         labelAbout = new Label();
         label3 = new Label();
         buttonReturn3 = new Button();
+        tabClients = new TabPage();
+        tabDeliveries = new TabPage();
+
+        btnAcceptDelivery = new Button();
+        btnRejectDelivery = new Button();
+        lblDeliveryPrice = new Label();
+        lblDeliveryGenre = new Label();
+        lblDeliveryAuthor = new Label();
+        lblDeliveryTitle = new Label();
+        rbPlagiarism = new RadioButton();
+        rbTypo = new RadioButton();
+        rbCorrect = new RadioButton();
+        txtDeliveryPrice = new TextBox();
+        txtDeliveryGenre = new TextBox();
+        txtDeliveryAuthor = new TextBox();
+        txtDeliveryTitle = new TextBox();
+        lblStatus = new Label();
+        lblUnsatisfiedCount = new Label();
+        pnlCustomerProcessing = new Panel();
+        btnCancelCustomer = new Button();
+        btnSellToCustomer = new Button();
+        txtSellingPrice = new TextBox();
+        cmbAvailableBooks = new ComboBox();
+        lblCustomerRequest = new Label();
+        btnSellFromShelf = new Button();
+        lstCustomerQueue = new ListBox();
+        lblNoCustomers = new Label();
         tabControlNewBook.SuspendLayout();
         tabPageMain.SuspendLayout();
         tabNewBook.SuspendLayout();
@@ -89,8 +116,8 @@ partial class BibleForm
         ((System.ComponentModel.ISupportInitialize)numericUpDownPages).BeginInit();
         tabPageMarket.SuspendLayout();
         groupBoxSearch.SuspendLayout();
-        groupBoxDetails.SuspendLayout();
         groupBoxChose.SuspendLayout();
+        groupBoxDetails.SuspendLayout();
         tabPageSupport.SuspendLayout();
         SuspendLayout();
         // 
@@ -101,10 +128,12 @@ partial class BibleForm
         tabControlNewBook.Controls.Add(tabNewBook);
         tabControlNewBook.Controls.Add(tabPageMarket);
         tabControlNewBook.Controls.Add(tabPageSupport);
+        tabControlNewBook.Controls.Add(tabClients);
+        //tabControlNewBook.Controls.Add(tabDeliveries);
         tabControlNewBook.Location = new Point(0, 0);
         tabControlNewBook.Name = "tabControlNewBook";
         tabControlNewBook.SelectedIndex = 0;
-        tabControlNewBook.Size = new Size(468, 321);
+        tabControlNewBook.Size = new Size(639, 321);
         tabControlNewBook.SizeMode = TabSizeMode.Fixed;
         tabControlNewBook.TabIndex = 0;
         tabControlNewBook.TabStop = false;
@@ -121,7 +150,7 @@ partial class BibleForm
         tabPageMain.Location = new Point(4, 27);
         tabPageMain.Name = "tabPageMain";
         tabPageMain.Padding = new Padding(3);
-        tabPageMain.Size = new Size(460, 290);
+        tabPageMain.Size = new Size(641, 290);
         tabPageMain.TabIndex = 0;
         tabPageMain.Text = "Главное меню";
         // 
@@ -151,7 +180,7 @@ partial class BibleForm
         btnNewBook.Name = "btnNewBook";
         btnNewBook.Size = new Size(229, 28);
         btnNewBook.TabIndex = 3;
-        btnNewBook.Text = "Добавить новую книгу";
+        btnNewBook.Text = "Заказать новую книгу";
         btnNewBook.UseVisualStyleBackColor = true;
         btnNewBook.Click += btnNewBook_Click;
         // 
@@ -160,9 +189,9 @@ partial class BibleForm
         labelRights.AutoSize = true;
         labelRights.Location = new Point(95, 271);
         labelRights.Name = "labelRights";
-        labelRights.Size = new Size(229, 15);
+        labelRights.Size = new Size(289, 15);
         labelRights.TabIndex = 2;
-        labelRights.Text = "ⓒ 2026 Ulitka Soft, Все права защищены.";
+        labelRights.Text = "ⓒ 2026 Ulitka Software Inc, Все права не защищены.";
         // 
         // labelSupport
         // 
@@ -170,9 +199,9 @@ partial class BibleForm
         labelSupport.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204);
         labelSupport.Location = new Point(15, 43);
         labelSupport.Name = "labelSupport";
-        labelSupport.Size = new Size(438, 30);
+        labelSupport.Size = new Size(488, 45);
         labelSupport.TabIndex = 1;
-        labelSupport.Text = "С помощью этого приложения вы можете управлять ресурсами библиотеки \r\nудалённо. Жмите на кнопку нужного действия ниже и дерзайте!\r\n";
+        labelSupport.Text = resources.GetString("labelSupport.Text");
         // 
         // labelHye
         // 
@@ -180,9 +209,9 @@ partial class BibleForm
         labelHye.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
         labelHye.Location = new Point(15, 12);
         labelHye.Name = "labelHye";
-        labelHye.Size = new Size(395, 21);
+        labelHye.Size = new Size(417, 21);
         labelHye.TabIndex = 0;
-        labelHye.Text = "Добро пожаловать в библиотечный менеджер! ";
+        labelHye.Text = "Добро пожаловать в менеджер магазина BookSell!";
         // 
         // tabNewBook
         // 
@@ -192,9 +221,9 @@ partial class BibleForm
         tabNewBook.Location = new Point(4, 27);
         tabNewBook.Name = "tabNewBook";
         tabNewBook.Padding = new Padding(3);
-        tabNewBook.Size = new Size(460, 290);
+        tabNewBook.Size = new Size(641, 290);
         tabNewBook.TabIndex = 1;
-        tabNewBook.Text = "Новая книга";
+        tabNewBook.Text = "Заказать книгу";
         tabNewBook.UseVisualStyleBackColor = true;
         // 
         // buttonReturn1
@@ -247,7 +276,7 @@ partial class BibleForm
         btnAddNewBook.Name = "btnAddNewBook";
         btnAddNewBook.Size = new Size(103, 73);
         btnAddNewBook.TabIndex = 13;
-        btnAddNewBook.Text = "Добавить новую книгу";
+        btnAddNewBook.Text = "Заказать новую книгу";
         btnAddNewBook.UseVisualStyleBackColor = true;
         btnAddNewBook.Click += btnAddNewBook_Click;
         // 
@@ -264,10 +293,10 @@ partial class BibleForm
         // numericUpDownPrice
         // 
         numericUpDownPrice.Location = new Point(227, 139);
+        numericUpDownPrice.Maximum = new decimal(new int[] { 9000000, 0, 0, 0 });
         numericUpDownPrice.Name = "numericUpDownPrice";
         numericUpDownPrice.Size = new Size(48, 23);
         numericUpDownPrice.TabIndex = 11;
-        numericUpDownPrice.Maximum = new decimal(new int[] { 9000000, 0, 0, 0 });
         // 
         // labelPrice
         // 
@@ -290,10 +319,10 @@ partial class BibleForm
         // numericUpDownPages
         // 
         numericUpDownPages.Location = new Point(106, 139);
+        numericUpDownPages.Maximum = new decimal(new int[] { 9000000, 0, 0, 0 });
         numericUpDownPages.Name = "numericUpDownPages";
         numericUpDownPages.Size = new Size(48, 23);
         numericUpDownPages.TabIndex = 8;
-        numericUpDownPages.Maximum = new decimal(new int[] { 9000000, 0, 0, 0 });
         // 
         // labelType
         // 
@@ -383,12 +412,12 @@ partial class BibleForm
         tabPageMarket.Controls.Add(labelMarket);
         tabPageMarket.Location = new Point(4, 27);
         tabPageMarket.Name = "tabPageMarket";
-        tabPageMarket.Size = new Size(460, 290);
+        tabPageMarket.Size = new Size(641, 290);
         tabPageMarket.TabIndex = 2;
         tabPageMarket.Text = "Магазин";
         // 
         // groupBoxSearch
-        //
+        // 
         groupBoxSearch.Controls.Add(textBoxSearchID);
         groupBoxSearch.Controls.Add(buttonSearch2);
         groupBoxSearch.Controls.Add(label2);
@@ -401,48 +430,6 @@ partial class BibleForm
         groupBoxSearch.TabIndex = 16;
         groupBoxSearch.TabStop = false;
         groupBoxSearch.Text = "Панель поиска";
-        // 
-        // groupBoxDetails
-        // 
-        groupBoxDetails.Controls.Add(btnSell);
-        groupBoxDetails.Controls.Add(btnBackToSearch);
-        groupBoxDetails.Controls.Add(labelInfo);
-        groupBoxDetails.Location = new Point(0, 0);
-        groupBoxDetails.Name = "groupBoxDetails";
-        groupBoxDetails.Size = new Size(422, 96);
-        groupBoxDetails.TabIndex = 21;
-        groupBoxDetails.TabStop = false;
-        groupBoxDetails.Text = "Панель информации о книге";
-        groupBoxDetails.Visible = false;
-        // 
-        // btnSell
-        // 
-        btnSell.Location = new Point(241, 43);
-        btnSell.Name = "btnSell";
-        btnSell.Size = new Size(94, 27);
-        btnSell.TabIndex = 19;
-        btnSell.Text = "Продать";
-        btnSell.UseVisualStyleBackColor = true;
-        btnSell.Click += btnSell_Click;
-        // 
-        // btnBackToSearch
-        // 
-        btnBackToSearch.Location = new Point(356, 45);
-        btnBackToSearch.Name = "btnBackToSearch";
-        btnBackToSearch.Size = new Size(60, 27);
-        btnBackToSearch.TabIndex = 16;
-        btnBackToSearch.Text = "Назад";
-        btnBackToSearch.UseVisualStyleBackColor = true;
-        btnBackToSearch.Click += btnBackToSearch_Click;
-        // 
-        // labelInfo
-        // 
-        labelInfo.AutoSize = true;
-        labelInfo.Location = new Point(6, 25);
-        labelInfo.Name = "labelInfo";
-        labelInfo.Size = new Size(250, 15);
-        labelInfo.TabIndex = 3;
-        labelInfo.Text = "Информация о книге: название, автор, цена";
         // 
         // textBoxSearchID
         // 
@@ -576,6 +563,48 @@ partial class BibleForm
         buttonReturn2.UseVisualStyleBackColor = true;
         buttonReturn2.Click += buttonReturn2_Click;
         // 
+        // groupBoxDetails
+        // 
+        groupBoxDetails.Controls.Add(btnSell);
+        groupBoxDetails.Controls.Add(btnBackToSearch);
+        groupBoxDetails.Controls.Add(labelInfo);
+        groupBoxDetails.Location = new Point(0, 0);
+        groupBoxDetails.Name = "groupBoxDetails";
+        groupBoxDetails.Size = new Size(422, 96);
+        groupBoxDetails.TabIndex = 21;
+        groupBoxDetails.TabStop = false;
+        groupBoxDetails.Text = "Панель информации о книге";
+        groupBoxDetails.Visible = false;
+        // 
+        // btnSell
+        // 
+        btnSell.Location = new Point(241, 43);
+        btnSell.Name = "btnSell";
+        btnSell.Size = new Size(94, 27);
+        btnSell.TabIndex = 19;
+        btnSell.Text = "Продать";
+        btnSell.UseVisualStyleBackColor = true;
+        btnSell.Click += btnSell_Click;
+        // 
+        // btnBackToSearch
+        // 
+        btnBackToSearch.Location = new Point(356, 45);
+        btnBackToSearch.Name = "btnBackToSearch";
+        btnBackToSearch.Size = new Size(60, 27);
+        btnBackToSearch.TabIndex = 16;
+        btnBackToSearch.Text = "Назад";
+        btnBackToSearch.UseVisualStyleBackColor = true;
+        btnBackToSearch.Click += btnBackToSearch_Click;
+        // 
+        // labelInfo
+        // 
+        labelInfo.AutoSize = true;
+        labelInfo.Location = new Point(6, 25);
+        labelInfo.Name = "labelInfo";
+        labelInfo.Size = new Size(250, 15);
+        labelInfo.TabIndex = 3;
+        labelInfo.Text = "Информация о книге: название, автор, цена";
+        // 
         // labelMarket
         // 
         labelMarket.AutoSize = true;
@@ -593,7 +622,7 @@ partial class BibleForm
         tabPageSupport.Controls.Add(buttonReturn3);
         tabPageSupport.Location = new Point(4, 27);
         tabPageSupport.Name = "tabPageSupport";
-        tabPageSupport.Size = new Size(460, 290);
+        tabPageSupport.Size = new Size(595, 290);
         tabPageSupport.TabIndex = 3;
         tabPageSupport.Text = "О нас";
         tabPageSupport.UseVisualStyleBackColor = true;
@@ -627,18 +656,312 @@ partial class BibleForm
         buttonReturn3.UseVisualStyleBackColor = true;
         buttonReturn3.Click += buttonReturn3_Click;
         // 
-        // FormManager
+        // tabClients
+        // 
+        tabClients.Location = new Point(4, 27);
+        tabClients.Name = "tabClients";
+        tabClients.Padding = new Padding(3);
+        tabClients.Size = new Size(641, 290);
+        tabClients.TabIndex = 4;
+        tabClients.Text = "Клиенты";
+        tabClients.UseVisualStyleBackColor = true;
+        tabClients.Controls.Add(pnlCustomerProcessing);
+        tabClients.Controls.Add(lblNoCustomers);
+        // 
+        // lblUnsatisfiedCount
+        // 
+        lblUnsatisfiedCount.AutoSize = true;
+        lblUnsatisfiedCount.Location = new Point(385, 9);
+        lblUnsatisfiedCount.Name = "lblUnsatisfiedCount";
+        lblUnsatisfiedCount.Size = new Size(38, 15);
+        lblUnsatisfiedCount.TabIndex = 4;
+        lblUnsatisfiedCount.Text = "label1";
+        // 
+        // pnlCustomerProcessing
+        // 
+        pnlCustomerProcessing.Controls.Add(lblUnsatisfiedCount);
+        pnlCustomerProcessing.Controls.Add(btnCancelCustomer);
+        pnlCustomerProcessing.Controls.Add(btnSellToCustomer);
+        pnlCustomerProcessing.Controls.Add(btnSellFromShelf);
+        pnlCustomerProcessing.Controls.Add(txtSellingPrice);
+        pnlCustomerProcessing.Controls.Add(lstCustomerQueue);
+        pnlCustomerProcessing.Controls.Add(cmbAvailableBooks);
+        pnlCustomerProcessing.Controls.Add(lblCustomerRequest);
+        pnlCustomerProcessing.Location = new Point(62, 75);
+        pnlCustomerProcessing.Margin = new Padding(3, 2, 3, 2);
+        pnlCustomerProcessing.Name = "pnlCustomerProcessing";
+        pnlCustomerProcessing.Size = new Size(506, 143);
+        pnlCustomerProcessing.TabIndex = 3;
+        pnlCustomerProcessing.Visible = false;
+        // 
+        // tabDeliveries
+        // 
+        tabDeliveries.Location = new Point(4, 27);
+        tabDeliveries.Name = "tabDeliveries";
+        tabDeliveries.Padding = new Padding(3);
+        tabDeliveries.Size = new Size(631, 290);
+        tabDeliveries.TabIndex = 5;
+        tabDeliveries.Text = "Поставки";
+        tabDeliveries.UseVisualStyleBackColor = true;
+        tabDeliveries.Controls.Add(btnRejectDelivery);
+        tabDeliveries.Controls.Add(lblDeliveryPrice);
+        tabDeliveries.Controls.Add(lblDeliveryGenre);
+        tabDeliveries.Controls.Add(lblDeliveryAuthor);
+        tabDeliveries.Controls.Add(lblDeliveryTitle);
+        tabDeliveries.Controls.Add(rbPlagiarism);
+        tabDeliveries.Controls.Add(rbTypo);
+        tabDeliveries.Controls.Add(rbCorrect);
+        tabDeliveries.Controls.Add(txtDeliveryPrice);
+        tabDeliveries.Controls.Add(txtDeliveryGenre);
+        tabDeliveries.Controls.Add(txtDeliveryAuthor);
+        tabDeliveries.Controls.Add(txtDeliveryTitle);
+        tabDeliveries.Controls.Add(lblStatus);
+        tabDeliveries.Visible = false;
+        // 
+        // cmbAvailableBooks
+        // 
+        cmbAvailableBooks.FormattingEnabled = true;
+        cmbAvailableBooks.Location = new Point(10, 26);
+        cmbAvailableBooks.Margin = new Padding(3, 2, 3, 2);
+        cmbAvailableBooks.Name = "cmbAvailableBooks";
+        cmbAvailableBooks.Size = new Size(133, 23);
+        cmbAvailableBooks.TabIndex = 1;
+        cmbAvailableBooks.Visible = false;
+        // 
+        // lblCustomerRequest
+        // 
+        lblCustomerRequest.AutoSize = true;
+        lblCustomerRequest.Location = new Point(10, 9);
+        lblCustomerRequest.Name = "lblCustomerRequest";
+        lblCustomerRequest.Size = new Size(38, 15);
+        lblCustomerRequest.TabIndex = 0;
+        lblCustomerRequest.Text = "label1";
+        lblCustomerRequest.Visible = false;
+        // 
+        // btnSellFromShelf
+        // 
+        btnSellFromShelf.Location = new Point(291, 76);
+        btnSellFromShelf.Margin = new Padding(3, 2, 3, 2);
+        btnSellFromShelf.Name = "btnSellFromShelf";
+        btnSellFromShelf.Size = new Size(199, 48);
+        btnSellFromShelf.TabIndex = 2;
+        btnSellFromShelf.Text = "Продать книгу со шкафа";
+        btnSellFromShelf.UseVisualStyleBackColor = true;
+        btnSellFromShelf.Visible = false;
+        // 
+        // lstCustomerQueue
+        // 
+        lstCustomerQueue.FormattingEnabled = true;
+        lstCustomerQueue.ItemHeight = 15;
+        lstCustomerQueue.Location = new Point(291, 26);
+        lstCustomerQueue.Margin = new Padding(3, 2, 3, 2);
+        lstCustomerQueue.Name = "lstCustomerQueue";
+        lstCustomerQueue.Size = new Size(199, 49);
+        lstCustomerQueue.TabIndex = 1;
+        lstCustomerQueue.Visible = false;
+        // 
+        // btnCancelCustomer
+        // 
+        btnCancelCustomer.Location = new Point(10, 103);
+        btnCancelCustomer.Margin = new Padding(3, 2, 3, 2);
+        btnCancelCustomer.Name = "btnCancelCustomer";
+        btnCancelCustomer.Size = new Size(82, 22);
+        btnCancelCustomer.TabIndex = 4;
+        btnCancelCustomer.Text = "Отказаться";
+        btnCancelCustomer.UseVisualStyleBackColor = true;
+        btnCancelCustomer.Visible = false;
+        // 
+        // btnSellToCustomer
+        // 
+        btnSellToCustomer.Location = new Point(10, 76);
+        btnSellToCustomer.Margin = new Padding(3, 2, 3, 2);
+        btnSellToCustomer.Name = "btnSellToCustomer";
+        btnSellToCustomer.Size = new Size(82, 22);
+        btnSellToCustomer.TabIndex = 3;
+        btnSellToCustomer.Text = "Продать";
+        btnSellToCustomer.UseVisualStyleBackColor = true;
+        btnSellToCustomer.Visible = false;
+        // 
+        // txtSellingPrice
+        // 
+        txtSellingPrice.Location = new Point(10, 52);
+        txtSellingPrice.Margin = new Padding(3, 2, 3, 2);
+        txtSellingPrice.Name = "txtSellingPrice";
+        txtSellingPrice.Size = new Size(110, 23);
+        txtSellingPrice.TabIndex = 2;
+        txtSellingPrice.Visible = false;
+        // 
+        // lblUnsatisfiedCount
+        // 
+        lblUnsatisfiedCount.AutoSize = true;
+        lblUnsatisfiedCount.Location = new Point(385, 9);
+        lblUnsatisfiedCount.Name = "lblUnsatisfiedCount";
+        lblUnsatisfiedCount.Size = new Size(38, 15);
+        lblUnsatisfiedCount.TabIndex = 4;
+        lblUnsatisfiedCount.Text = "label1";
+        lblUnsatisfiedCount.Visible = false;
+        // 
+        // btnAcceptDelivery
+        // 
+        btnAcceptDelivery.Location = new Point(139, 158);
+        btnAcceptDelivery.Margin = new Padding(3, 2, 3, 2);
+        btnAcceptDelivery.Name = "btnAcceptDelivery";
+        btnAcceptDelivery.Size = new Size(152, 29);
+        btnAcceptDelivery.TabIndex = 13;
+        btnAcceptDelivery.Text = "Принять книгу";
+        btnAcceptDelivery.UseVisualStyleBackColor = true;
+        // 
+        // btnRejectDelivery
+        // 
+        btnRejectDelivery.Location = new Point(341, 158);
+        btnRejectDelivery.Margin = new Padding(3, 2, 3, 2);
+        btnRejectDelivery.Name = "btnRejectDelivery";
+        btnRejectDelivery.Size = new Size(152, 29);
+        btnRejectDelivery.TabIndex = 12;
+        btnRejectDelivery.Text = "Отклонить книгу";
+        btnRejectDelivery.UseVisualStyleBackColor = true;
+        // 
+        // lblDeliveryPrice
+        // 
+        lblDeliveryPrice.AutoSize = true;
+        lblDeliveryPrice.Location = new Point(41, 98);
+        lblDeliveryPrice.Name = "lblDeliveryPrice";
+        lblDeliveryPrice.Size = new Size(38, 15);
+        lblDeliveryPrice.TabIndex = 11;
+        lblDeliveryPrice.Text = "Цена:";
+        // 
+        // lblDeliveryGenre
+        // 
+        lblDeliveryGenre.AutoSize = true;
+        lblDeliveryGenre.Location = new Point(41, 74);
+        lblDeliveryGenre.Name = "lblDeliveryGenre";
+        lblDeliveryGenre.Size = new Size(41, 15);
+        lblDeliveryGenre.TabIndex = 10;
+        lblDeliveryGenre.Text = "Жанр:";
+        // 
+        // lblDeliveryAuthor
+        // 
+        lblDeliveryAuthor.AutoSize = true;
+        lblDeliveryAuthor.Location = new Point(41, 48);
+        lblDeliveryAuthor.Name = "lblDeliveryAuthor";
+        lblDeliveryAuthor.Size = new Size(43, 15);
+        lblDeliveryAuthor.TabIndex = 9;
+        lblDeliveryAuthor.Text = "Автор:";
+        // 
+        // lblDeliveryTitle
+        // 
+        lblDeliveryTitle.AutoSize = true;
+        lblDeliveryTitle.Location = new Point(41, 24);
+        lblDeliveryTitle.Name = "lblDeliveryTitle";
+        lblDeliveryTitle.Size = new Size(97, 15);
+        lblDeliveryTitle.TabIndex = 8;
+        lblDeliveryTitle.Text = "Название книги:";
+        // 
+        // rbPlagiarism
+        // 
+        rbPlagiarism.AutoSize = true;
+        rbPlagiarism.Enabled = false;
+        rbPlagiarism.Location = new Point(292, 69);
+        rbPlagiarism.Margin = new Padding(3, 2, 3, 2);
+        rbPlagiarism.Name = "rbPlagiarism";
+        rbPlagiarism.Size = new Size(70, 19);
+        rbPlagiarism.TabIndex = 7;
+        rbPlagiarism.TabStop = true;
+        rbPlagiarism.Text = "Плагиат";
+        rbPlagiarism.UseVisualStyleBackColor = true;
+        // 
+        // rbTypo
+        // 
+        rbTypo.AutoSize = true;
+        rbTypo.Enabled = false;
+        rbTypo.Location = new Point(292, 46);
+        rbTypo.Margin = new Padding(3, 2, 3, 2);
+        rbTypo.Name = "rbTypo";
+        rbTypo.Size = new Size(77, 19);
+        rbTypo.TabIndex = 6;
+        rbTypo.TabStop = true;
+        rbTypo.Text = "Опечатка";
+        rbTypo.UseVisualStyleBackColor = true;
+        // 
+        // rbCorrect
+        // 
+        rbCorrect.AutoSize = true;
+        rbCorrect.Enabled = false;
+        rbCorrect.Location = new Point(292, 24);
+        rbCorrect.Margin = new Padding(3, 2, 3, 2);
+        rbCorrect.Name = "rbCorrect";
+        rbCorrect.Size = new Size(59, 19);
+        rbCorrect.TabIndex = 5;
+        rbCorrect.TabStop = true;
+        rbCorrect.Text = "Верно";
+        rbCorrect.UseVisualStyleBackColor = true;
+        // 
+        // txtDeliveryPrice
+        // 
+        txtDeliveryPrice.Location = new Point(165, 96);
+        txtDeliveryPrice.Margin = new Padding(3, 2, 3, 2);
+        txtDeliveryPrice.Name = "txtDeliveryPrice";
+        txtDeliveryPrice.ReadOnly = true;
+        txtDeliveryPrice.Size = new Size(110, 23);
+        txtDeliveryPrice.TabIndex = 4;
+        // 
+        // txtDeliveryGenre
+        // 
+        txtDeliveryGenre.Location = new Point(165, 71);
+        txtDeliveryGenre.Margin = new Padding(3, 2, 3, 2);
+        txtDeliveryGenre.Name = "txtDeliveryGenre";
+        txtDeliveryGenre.ReadOnly = true;
+        txtDeliveryGenre.Size = new Size(110, 23);
+        txtDeliveryGenre.TabIndex = 3;
+        // 
+        // txtDeliveryAuthor
+        // 
+        txtDeliveryAuthor.Location = new Point(165, 46);
+        txtDeliveryAuthor.Margin = new Padding(3, 2, 3, 2);
+        txtDeliveryAuthor.Name = "txtDeliveryAuthor";
+        txtDeliveryAuthor.ReadOnly = true;
+        txtDeliveryAuthor.Size = new Size(110, 23);
+        txtDeliveryAuthor.TabIndex = 2;
+        // 
+        // txtDeliveryTitle
+        // 
+        txtDeliveryTitle.Location = new Point(165, 22);
+        txtDeliveryTitle.Margin = new Padding(3, 2, 3, 2);
+        txtDeliveryTitle.Name = "txtDeliveryTitle";
+        txtDeliveryTitle.ReadOnly = true;
+        txtDeliveryTitle.Size = new Size(110, 23);
+        txtDeliveryTitle.TabIndex = 1;
+        // 
+        // lblStatus
+        // 
+        lblStatus.AutoSize = true;
+        lblStatus.Location = new Point(41, 226);
+        lblStatus.Name = "lblStatus";
+        lblStatus.Size = new Size(0, 15);
+        lblStatus.TabIndex = 0;
+        // 
+        // lblNoCustomers
+        // 
+        lblNoCustomers.AutoSize = true;
+        lblNoCustomers.Location = new Point(195, 45);
+        lblNoCustomers.Name = "lblNoCustomers";
+        lblNoCustomers.Size = new Size(211, 15);
+        lblNoCustomers.TabIndex = 0;
+        lblNoCustomers.Text = "У Вас пока нет ни одного покупателя";
+        lblNoCustomers.Visible = true;
+        // 
+        // BibleForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         AutoValidate = AutoValidate.Disable;
         BackgroundImage = Properties.Resources.b2dffd3b7b204e29e4c4b67d977199a11;
         BackgroundImageLayout = ImageLayout.Stretch;
-        ClientSize = new Size(847, 319);
+        ClientSize = new Size(1060, 319);
         Controls.Add(tabControlNewBook);
-        Name = "FormManager";
+        Name = "BibleForm";
         StartPosition = FormStartPosition.CenterScreen;
-        Text = "Ulitka Soft - Библиотечный менеджер";
+        Text = "Ulitka Soft - SellBook";
         tabControlNewBook.ResumeLayout(false);
         tabPageMain.ResumeLayout(false);
         tabPageMain.PerformLayout();
@@ -652,10 +975,10 @@ partial class BibleForm
         tabPageMarket.PerformLayout();
         groupBoxSearch.ResumeLayout(false);
         groupBoxSearch.PerformLayout();
-        groupBoxDetails.ResumeLayout(false);
-        groupBoxDetails.PerformLayout();
         groupBoxChose.ResumeLayout(false);
         groupBoxChose.PerformLayout();
+        groupBoxDetails.ResumeLayout(false);
+        groupBoxDetails.PerformLayout();
         tabPageSupport.ResumeLayout(false);
         tabPageSupport.PerformLayout();
         ResumeLayout(false);
@@ -715,4 +1038,31 @@ partial class BibleForm
     private Button btnSell;
     private Button btnBackToSearch;
     private Label labelInfo;
+    private TabPage tabClients;
+    private TabPage tabDeliveries;
+
+    private Label lblStatus;
+    private TextBox txtDeliveryTitle;
+    private TextBox txtDeliveryAuthor;
+    private TextBox txtDeliveryGenre;
+    private TextBox txtDeliveryPrice;
+    private RadioButton rbCorrect;
+    private RadioButton rbTypo;
+    private RadioButton rbPlagiarism;
+    private Label lblDeliveryGenre;
+    private Label lblDeliveryAuthor;
+    private Label lblDeliveryTitle;
+    private Label lblDeliveryPrice;
+    private Button btnAcceptDelivery;
+    private Button btnRejectDelivery;
+    private Label lblNoCustomers;
+    private ListBox lstCustomerQueue;
+    private Button btnSellFromShelf;
+    private Panel pnlCustomerProcessing;
+    private Label lblCustomerRequest;
+    private ComboBox cmbAvailableBooks;
+    private TextBox txtSellingPrice;
+    private Button btnCancelCustomer;
+    private Button btnSellToCustomer;
+    private Label lblUnsatisfiedCount;
 }
