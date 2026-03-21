@@ -5,19 +5,17 @@ using static System.Net.WebRequestMethods;
 
 namespace Lab3.BookStoreLibrary
 {
-    internal class BookError
+    public class BookMismatch
     {
-        private Random random;
+        private static Random random = new Random();
         /// <summary>
         /// Создание плагиата
         /// </summary>
         /// <param name="titles">Названия книг из "Базы данных"</param>
         /// <param name="authors">Авторы из "Базы данных"</param>
         /// <returns>Не соответствующие друг другу автор и название книги</returns>
-        public string [] GeneratePlagiarism(List<string> titles, List<string> authors)
+        public static List <string> GeneratePlagiarism(List<string> titles, List<string> authors)
         {
-            random = new Random();
-
             // Перемешиваем списки
             Shuffle(titles);
             Shuffle(authors);
@@ -40,7 +38,7 @@ namespace Lab3.BookStoreLibrary
         /// Перемешивание массивов
         /// </summary>
         /// <param name="list">Массив для перемешивания</param>
-        private void Shuffle<T>(List<T> list)
+        public static void Shuffle<T>(List<T> list)
         {
             int n = list.Count;
             while (n > 1)
@@ -57,9 +55,12 @@ namespace Lab3.BookStoreLibrary
         /// </summary>
         /// <param name="originalTitle">Оригинальное название</param>
         /// <returns>Название с опечаткой</returns>
-        public string GenerateTypo(string originalTitle)
+        public static string GenerateTypo(string originalTitle)
         {
-            string[] validChars = { "а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я", " " };
+            string[] validChars = { "а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и",
+                "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц",
+                "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я", " ", "0", "1", "2", "3",
+                "4", "5", "6", "7", "8", "9"};
             // Выбираем случайную позицию для замены
             int index = random.Next(originalTitle.Length);
             char originalChar = originalTitle[index];
@@ -81,7 +82,7 @@ namespace Lab3.BookStoreLibrary
         /// <param name="incomingTitle">Проверяемое название</param>
         /// <param name="incomingAuthor">Проверяемый автор</param>
         /// <returns>true, если в "Базе данных" название не соответствует автору</returns>
-        public bool IsPlagiarism(List<string> titles, List<string> authors, string incomingTitle, string incomingAuthor)
+        public static bool IsPlagiarism(List<string> titles, List<string> authors, string incomingTitle, string incomingAuthor)
         {
             List<int> indexes = new List<int>();
             // Проверяем, существует ли такое название в базе
@@ -115,7 +116,7 @@ namespace Lab3.BookStoreLibrary
         /// <param name="incomingTitle">Проверяемая строка</param>
         /// <param name="existingTitles">Возможные варианты названий </param>
         /// <returns>true, если в проверяемом названии есть опечатка</returns>
-        public bool IsTypo(string incomingTitle, List<string> existingTitles)
+        public static bool IsTypo(string incomingTitle, List<string> existingTitles)
         {
             // Предварительно фильтруем по длине
             var candidates = existingTitles.Where(t => t.Length == incomingTitle.Length).ToList();
@@ -136,7 +137,7 @@ namespace Lab3.BookStoreLibrary
         /// <param name="title1">Строка 1</param>
         /// <param name="title2">Строка 2</param>
         /// <returns>true, если в сравниваемых строках ровно одно отличие</returns>
-        private bool CheckSingleDifference(string title1, string title2)
+        public static bool CheckSingleDifference(string title1, string title2)
         {
             int diffCount = 0;
             for (int i = 0; i < title1.Length; i++)
