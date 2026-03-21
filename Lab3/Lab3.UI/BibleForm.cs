@@ -147,13 +147,15 @@ public partial class BibleForm : Form
     }
 
 
-    private string GetUniqueTitle(string baseTitle)
+    private string GetUniqueTitle(string baseTitle, string baseAuthor)
     {
         string currentTitle = baseTitle;
+        string currentAuthor = baseAuthor;
         int counter = 2;
 
         // Проверяем все книги во всех шкафах магазина
-        while (_store.Shelves.Any(s => s.Books.Any(b => b.Title.Equals(currentTitle, StringComparison.OrdinalIgnoreCase))))
+        while (_store.Shelves.Any(s => s.Books.Any(b => b.Title.Equals(currentTitle, StringComparison.OrdinalIgnoreCase) &&
+        b.Author.Equals(currentAuthor, StringComparison.OrdinalIgnoreCase)))) //Добавлена проверка на соответствие автора
         {
             currentTitle = $"{baseTitle} {counter}";
             counter++;
@@ -290,7 +292,7 @@ public partial class BibleForm : Form
             int pages = (int)numericUpDownPages.Value;
             decimal price = numericUpDownPrice.Value;
 
-            title = GetUniqueTitle(title);
+            title = GetUniqueTitle(title, author);
 
             Bookshelf shelf = GetOrCreateShelf(genre);
 
