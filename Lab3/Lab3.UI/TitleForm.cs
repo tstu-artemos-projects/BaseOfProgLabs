@@ -1,4 +1,4 @@
-﻿namespace TitleForm
+﻿namespace Lab3.UI
 {
     public partial class TitleForm : Form
     {
