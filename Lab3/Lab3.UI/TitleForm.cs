@@ -10,23 +10,24 @@
 
         private void BtnHard_Click(object sender, EventArgs e)
         {
-            ShowConfirmationDialog("Сложно");
+            ShowConfirmationDialog(Difficulty.Hard);
         }
 
         private void BtnNormal_Click(object sender, EventArgs e)
         {
-            ShowConfirmationDialog("Средне");
+            ShowConfirmationDialog(Difficulty.Normal);
         }
 
         private void BtnEasy_Click(object sender, EventArgs e)
         {
-            ShowConfirmationDialog("Легко");
+            ShowConfirmationDialog(Difficulty.Easy);
         }
 
-        private void ShowConfirmationDialog(string difficulty)
+        private void ShowConfirmationDialog(Difficulty difficulty)
         {
+            var difficultyName = DifficultyExtensions.ToDisplayString(difficulty);
             var result = MessageBox.Show(
-                $"Вы уверены, что хотите начать игру в режиме {difficulty}?",
+                $"Вы уверены, что хотите начать игру в режиме {difficultyName}?",
                 "Подтверждение",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
@@ -34,11 +35,15 @@
 
             if (result == DialogResult.Yes)
             {
-                MessageBox.Show($"Вы выбрали режим: {difficulty}. Начинаем игру!",
+                MessageBox.Show($"Вы выбрали режим: {difficultyName}. Начинаем игру!",
                               "Успех",
                               MessageBoxButtons.OK,
                               MessageBoxIcon.Information);
-                // добавление перехода на игровую форму
+
+                this.Hide();
+                var bibleForm = new BibleForm(difficulty);
+                bibleForm.ShowDialog();
+                this.Close();
             }
             else
             {
@@ -52,7 +57,7 @@
         private void btnAboutGame_Click(object sender, EventArgs e)
         {
             MessageBox.Show(
-                "Книжный магазин: Бизнес‑стратегия\n\n" +
+                "SellBook: Buisness Strategy\n\n" +
                 "Управляйте книжным магазином, заказывайте книги, проверяйте поставки\n" +
                 "и обслуживайте покупателей. Следите за балансом и очередью!\n\n" +
                 "Режимы сложности:\n" +

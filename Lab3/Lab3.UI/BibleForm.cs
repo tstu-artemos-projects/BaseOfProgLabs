@@ -40,7 +40,7 @@ public partial class BibleForm : Form
         numericUpDownPrice.Value = Math.Clamp(randomBook.Price, numericUpDownPrice.Minimum, numericUpDownPrice.Maximum);
     }
 
-    public BibleForm()
+    public BibleForm(Difficulty difficulty)
     {
         try {
             RandomGenreBase = ReadBase("Genre.txt");
