@@ -15,7 +15,34 @@ public partial class BibleForm : Form
     private readonly string[] _randomGenreBase;
 
     private readonly Difficulty _difficulty;
-    
+
+    private void tabControlNewBook_DrawItem(object sender, DrawItemEventArgs e)
+    {
+        TabControl tc = (TabControl)sender;
+        TabPage page = tc.TabPages[e.Index];
+        Rectangle rect = tc.GetTabRect(e.Index);
+
+        Color backColor = (e.State == DrawItemState.Selected) ? Color.MediumPurple : Color.LightGray;
+        Color textColor = Color.White;
+
+        using (Brush brush = new SolidBrush(backColor))
+        using (Pen pen = new Pen(backColor))
+        {
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            int radius = 10;
+            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddArc(rect.X, rect.Y, radius, radius, 180, 90); // Левый верх
+            path.AddArc(rect.Right - radius, rect.Y, radius, radius, 270, 90); // Правый верх
+            path.AddLine(rect.Right, rect.Bottom, rect.X, rect.Bottom); // Низ прямой
+            path.CloseFigure();
+
+            e.Graphics.FillPath(brush, path);
+
+            TextRenderer.DrawText(e.Graphics, page.Text, tc.Font, rect, textColor, TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter);
+        }
+    }
+
     public BibleForm(Difficulty difficulty)
     {
         _randomGenreBase = DatabaseProcessing.ReadGenres();
@@ -366,4 +393,33 @@ public partial class BibleForm : Form
         }
     }
 
+    private void labelAutor_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void lblCustomerRequest_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void lblUnsatisfiedCount_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void rbPlagiarism_CheckedChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    private void btnRejectDelivery_Click(object sender, EventArgs e)
+    {
+
+    }
 }
