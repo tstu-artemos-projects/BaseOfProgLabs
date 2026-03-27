@@ -392,44 +392,4 @@ public partial class BibleForm : Form
             UpdateMarketUI();
         }
     }
-
-    private void labelAutor_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void lblCustomerRequest_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void lblUnsatisfiedCount_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-    {
-
-    }
-
-    private void rbPlagiarism_CheckedChanged(object sender, EventArgs e)
-    {
-
-    }
-
-    private void btnRejectDelivery_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void labelMarket_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void panel2_Paint(object sender, PaintEventArgs e)
-    {
-
-    }
 }

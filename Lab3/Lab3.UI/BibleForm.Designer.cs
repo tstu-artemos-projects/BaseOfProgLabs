@@ -390,7 +390,6 @@ partial class BibleForm
         labelAutor.Size = new Size(74, 15);
         labelAutor.TabIndex = 3;
         labelAutor.Text = "Имя автора:";
-        labelAutor.Click += labelAutor_Click;
         // 
         // textBoxAutor
         // 
@@ -618,7 +617,6 @@ partial class BibleForm
         labelMarket.Size = new Size(78, 21);
         labelMarket.TabIndex = 2;
         labelMarket.Text = "Магазин";
-        labelMarket.Click += labelMarket_Click;
         // 
         // tabPageSupport
         // 
@@ -729,7 +727,6 @@ partial class BibleForm
         numericUpDown1.Name = "numericUpDown1";
         numericUpDown1.Size = new Size(184, 23);
         numericUpDown1.TabIndex = 6;
-        numericUpDown1.ValueChanged += numericUpDown1_ValueChanged;
         // 
         // btnSellToCustomer
         // 
@@ -779,7 +776,6 @@ partial class BibleForm
         lblUnsatisfiedCount.TabIndex = 4;
         lblUnsatisfiedCount.Text = "Очередь клиентов";
         lblUnsatisfiedCount.Visible = false;
-        lblUnsatisfiedCount.Click += lblUnsatisfiedCount_Click;
         // 
         // lstCustomerQueue
         // 
@@ -810,7 +806,6 @@ partial class BibleForm
         lblCustomerRequest.TabIndex = 0;
         lblCustomerRequest.Text = "Книга";
         lblCustomerRequest.Visible = false;
-        lblCustomerRequest.Click += lblCustomerRequest_Click;
         // 
         // lblNoCustomers
         // 
@@ -890,7 +885,6 @@ partial class BibleForm
         rbPlagiarism.TabIndex = 7;
         rbPlagiarism.Text = "Плагиат";
         rbPlagiarism.UseVisualStyleBackColor = true;
-        rbPlagiarism.CheckedChanged += rbPlagiarism_CheckedChanged;
         // 
         // rbCorrect
         // 
@@ -1025,7 +1019,6 @@ partial class BibleForm
         btnRejectDelivery.TabIndex = 12;
         btnRejectDelivery.Text = "Отклонить книгу";
         btnRejectDelivery.UseVisualStyleBackColor = true;
-        btnRejectDelivery.Click += btnRejectDelivery_Click;
         // 
         // button2
         // 
@@ -1064,7 +1057,6 @@ partial class BibleForm
         panel2.Name = "panel2";
         panel2.Size = new Size(362, 35);
         panel2.TabIndex = 1;
-        panel2.Paint += panel2_Paint;
         // 
         // labelStats
         // 
