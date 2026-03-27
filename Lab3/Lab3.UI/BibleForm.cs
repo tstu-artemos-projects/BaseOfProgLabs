@@ -58,8 +58,10 @@ public partial class BibleForm : Form
         _randomDeliveryTimer = new System.Windows.Forms.Timer { Interval = _settings.DeliveryInterval };
         _randomDeliveryTimer.Tick += OnRandomDeliveryTick;
 
-        _gameTickTimer = new System.Windows.Forms.Timer { Interval = _settings.DayDurationSeconds * 1000 };
+        _gameTickTimer = new System.Windows.Forms.Timer { Interval = 1000 };
         _gameTickTimer.Tick += OnGameTick;
+
+        _remainingTime = _settings.DayDurationSeconds;
 
         _customerTimer.Start();
         _randomDeliveryTimer.Start();
