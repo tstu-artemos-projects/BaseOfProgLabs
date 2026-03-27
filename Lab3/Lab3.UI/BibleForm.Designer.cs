@@ -833,7 +833,6 @@ partial class BibleForm
         tabDeliveries.BackColor = SystemColors.GradientInactiveCaption;
         tabDeliveries.Controls.Add(label5);
         tabDeliveries.Controls.Add(panel1);
-        tabDeliveries.Controls.Add(lblStatus);
         tabDeliveries.Location = new Point(4, 27);
         tabDeliveries.Name = "tabDeliveries";
         tabDeliveries.Padding = new Padding(3);
@@ -855,6 +854,7 @@ partial class BibleForm
         // 
         panel1.Controls.Add(groupBox5);
         panel1.Controls.Add(groupBox4);
+        panel1.Controls.Add(lblStatus);
         panel1.Controls.Add(groupBox3);
         panel1.Location = new Point(65, 46);
         panel1.Name = "panel1";
@@ -919,9 +919,9 @@ partial class BibleForm
         groupBox4.Controls.Add(lblDeliveryGenre);
         groupBox4.Controls.Add(txtDeliveryGenre);
         groupBox4.Controls.Add(txtDeliveryAuthor);
-        groupBox4.Location = new Point(16, 13);
+        groupBox4.Location = new Point(16, 34);
         groupBox4.Name = "groupBox4";
-        groupBox4.Size = new Size(350, 182);
+        groupBox4.Size = new Size(350, 161);
         groupBox4.TabIndex = 15;
         groupBox4.TabStop = false;
         groupBox4.Text = "Пришедшая книга";
@@ -1044,10 +1044,11 @@ partial class BibleForm
         // lblStatus
         // 
         lblStatus.AutoSize = true;
-        lblStatus.Location = new Point(41, 226);
+        lblStatus.Location = new Point(22, 13);
         lblStatus.Name = "lblStatus";
-        lblStatus.Size = new Size(0, 15);
+        lblStatus.Size = new Size(43, 15);
         lblStatus.TabIndex = 0;
+        lblStatus.Text = "Статус";
         // 
         // btnAcceptDelivery
         // 
@@ -1061,7 +1062,7 @@ partial class BibleForm
         // 
         // panel2
         // 
-        panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        panel2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         panel2.BackColor = SystemColors.GradientInactiveCaption;
         panel2.Controls.Add(labelStats);
         panel2.Location = new Point(513, 42);
@@ -1122,6 +1123,7 @@ partial class BibleForm
         tabDeliveries.ResumeLayout(false);
         tabDeliveries.PerformLayout();
         panel1.ResumeLayout(false);
+        panel1.PerformLayout();
         groupBox5.ResumeLayout(false);
         groupBox5.PerformLayout();
         groupBox4.ResumeLayout(false);

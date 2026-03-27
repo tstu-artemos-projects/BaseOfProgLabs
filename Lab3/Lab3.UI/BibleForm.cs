@@ -158,6 +158,7 @@ public partial class BibleForm : Form
 
     private void UpdateDeliveryUI()
     {
+        UpdateStatsLabel();
         if (_store.IncomingBooks.Count == 0)
         {
             if (tabControlNewBook.TabPages.Contains(tabDeliveries))
@@ -175,6 +176,9 @@ public partial class BibleForm : Form
         txtDeliveryGenre.Text = currentBook.Genre;
         txtDeliveryPrice.Text = currentBook.Price.ToString("F2");
 
+        if (!currentBook.IsOrdered && currentBook.PurchasePrice > _store.Balance)
+            buttonAcceptDelivery.Enabled = false;
+
         rbCorrect.Checked = true;
 
         lblStatus.Text = $"Книг в очереди на проверку: {_store.IncomingBooks.Count}";
@@ -191,6 +195,7 @@ public partial class BibleForm : Form
 
     private void UpdateCustomerListUI()
     {
+        UpdateStatsLabel();
         var customers = _customerQueue.GetQueueSnapshot();
 
         if (customers.Count == 0)
@@ -505,7 +510,7 @@ public partial class BibleForm : Form
             string genre = comboBoxType.Text.Trim();
             int pages = (int)numericUpDownPages.Value;
 
-            Book orderedBook = new Book(title, author, genre, pages, price);
+            Book orderedBook = new Book(title, author, genre, pages, price, true);
             orderedBook.IsPlagiarism = false;
             orderedBook.HasTypo = false;
 
@@ -650,6 +655,9 @@ public partial class BibleForm : Form
             shelf.AddBook(book);
 
             _store.IncomingBooks.Dequeue();
+
+            if (!book.IsOrdered)
+                _store.Penalty(book.Price);
 
             UpdateDeliveryUI();
             UpdateMarketUI();

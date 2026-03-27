@@ -5,12 +5,23 @@
 /// </summary>
 public class Book
 {
-    public Guid Id { get; private set; }// Уникальный идентификатор книги
-    public string Title { get; private set; }// Название книги  
-    public string Author { get; private set; }// Автор книги   
-    public string Genre { get; private set; }// Жанр книги  
-    public int PageCount { get; private set; }// Количество страниц   
-    public decimal Price { get; private set; }// Цена книги
+    public Guid Id { get; private set; } // Уникальный идентификатор книги
+    public string Title { get; private set; } // Название книги  
+    public string Author { get; private set; } // Автор книги   
+    public string Genre { get; private set; } // Жанр книги  
+    public int PageCount { get; private set; } // Количество страниц   
+    public decimal Price { get; private set; } // Цена книги
+
+    public bool IsOrdered { get; private set; }
+    public bool IsPlagiarism { get; set; } // Является ли книга плагиатом
+    public bool HasTypo { get; set; } // Есть ли опечатка в названии
+    public string? OriginalTitle { get; set; } // Правильное название (если есть ошибка)
+    public int EditionNumber { get; set; } = 1; // Номер издания (для сиквелов)
+    public decimal PurchasePrice { get; private set; }
+
+
+    // Вычисляемое свойство для отображения названия с учётом сиквела
+    public string DisplayTitle => EditionNumber > 1 ? $"{Title} {EditionNumber}" : Title;//Если EditionNumber = 1, то возвращает Бесы, если EditionNumber = 2 возвращает Бесы 2
 
     /// <summary>
     /// Конструктор класса Book
@@ -20,19 +31,8 @@ public class Book
     /// <param name="genre">Жанр книги</param>
     /// <param name="pageCount">Количество страниц</param>
     /// <param name="price">Цена книги</param>
-
-
-    public bool IsPlagiarism { get; set; } // Является ли книга плагиатом
-    public bool HasTypo { get; set; }    // Есть ли опечатка в названии
-    public string? OriginalTitle { get; set; }  // Правильное название (если есть ошибка)
-    public int EditionNumber { get; set; } = 1; // Номер издания (для сиквелов)
-    public decimal PurchasePrice { get; private set; }
-
-
-    // Вычисляемое свойство для отображения названия с учётом сиквела
-    public string DisplayTitle => EditionNumber > 1 ? $"{Title} {EditionNumber}" : Title;//Если EditionNumber = 1, то возвращает Бесы, если EditionNumber = 2 возвращает Бесы 2
-
-    public Book(string title, string author, string genre, int pageCount, decimal price)
+    /// <param name="isOrdered">Заказана ли книга?</param>
+    public Book(string title, string author, string genre, int pageCount, decimal price, bool isOrdered = false)
     {
         Id = Guid.NewGuid();
         Title = title;
@@ -46,6 +46,7 @@ public class Book
         HasTypo = false;
         OriginalTitle = title;
         EditionNumber = 1;
+        IsOrdered = isOrdered;
     }
 
 
