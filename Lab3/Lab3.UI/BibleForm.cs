@@ -6,42 +6,23 @@ public partial class BibleForm : Form
 {
     private bool _isProgrammaticChange = false; // проверка изменения из программы
 
-    /// <summary>
-    /// Статический метод чтения базы данных из файла
-    /// </summary>
-    /// <param name="fileName">Имя файла с данными</param>
-    /// <returns>Массив строк из файла</returns>
-    public static string[] ReadBase(string fileName)
-    {
-        if (!File.Exists(fileName))
-            return Array.Empty<string>();
-        return File.ReadAllLines(fileName);
-    }
-
     private readonly BookStore _store;
     private const int MaxShelves = 5;
     private const int MaxBooksInShelves = 5;
 
-    private readonly string[] _randomGenreBase;
     private readonly string[] _randomAuthorBase;
     private readonly string[] _randomBookNameBase;
+    private readonly string[] _randomGenreBase;
 
     private readonly Difficulty _difficulty;
     
     public BibleForm(Difficulty difficulty)
     {
-        try {
-            _randomGenreBase = ReadBase("Genre.txt");
-            _randomAuthorBase = ReadBase("Authors.txt");
-            _randomBookNameBase = ReadBase("BookName.txt");
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            _randomGenreBase = Array.Empty<string>();
-            _randomAuthorBase = Array.Empty<string>();
-            _randomBookNameBase = Array.Empty<string>();
-        }
+        _randomGenreBase = DatabaseProcessing.ReadGenres();
+        var dataBase = DatabaseProcessing.InitDatabase();
+
+        (_randomBookNameBase, _randomAuthorBase) = DatabaseProcessing.SplitBookTitlingRecord(dataBase);
+
         _store = new BookStore(MaxShelves);
         _difficulty = difficulty;
 
