@@ -711,7 +711,7 @@ public partial class BibleForm : Form
         var customers = _customerQueue.GetQueueSnapshot();
         var customer = customers[lstCustomerQueue.SelectedIndex];
         var book = (Book)cmbAvailableBooks.SelectedItem;
-        decimal salePrice = numericUpDown1.Value;
+        decimal salePrice = priceSellNumericUpDown.Value;
 
         decimal maxAllowedPrice = book.PurchasePrice * 1.15m;
 
@@ -735,7 +735,7 @@ public partial class BibleForm : Form
         UpdateMarketUI();
     }
 
-    private void listViewCostumers_SelectedIndexChanged(object sender, EventArgs e)
+    private void lstCustomerQueue_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (lstCustomerQueue.SelectedIndex == -1) return;
 
@@ -747,10 +747,24 @@ public partial class BibleForm : Form
         else
             lblCustomerRequest.Text = $"Хочет жанр: {selectedCustomer.DesiredGenre}";
 
-        numericUpDown1.Maximum = Math.Round(selectedCustomer.MaxPrice * 2m);
-        numericUpDown1.Minimum = Math.Round(0m);
-        numericUpDown1.Value = Math.Round(selectedCustomer.MaxPrice * 0.9m);
+        priceSellNumericUpDown.Maximum = Math.Round(selectedCustomer.MaxPrice * 2m);
+        priceSellNumericUpDown.Minimum = Math.Round(0m);
+        priceSellNumericUpDown.Value = Math.Round(selectedCustomer.MaxPrice * 0.9m);
 
         RefreshAvailableBooks(selectedCustomer);
+    }
+
+    private void btnCancelCustomer_Click(object sender, EventArgs e)
+    {
+        if (lstCustomerQueue.SelectedIndex == -1) return;
+
+        var customers = _customerQueue.GetQueueSnapshot();
+        var customer = customers[lstCustomerQueue.SelectedIndex];
+
+        _customerQueue.CustomerLeavesUnsatisfied(customer);
+        MessageBox.Show("Вы отказали клиенту. Счетчик недовольных вырос.");
+
+        UpdateCustomerListUI();
+
     }
 }
