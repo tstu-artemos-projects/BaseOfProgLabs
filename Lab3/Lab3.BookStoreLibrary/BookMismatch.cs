@@ -14,7 +14,7 @@ namespace Lab3.BookStoreLibrary
         /// <param name="titles">Названия книг из "Базы данных"</param>
         /// <param name="authors">Авторы из "Базы данных"</param>
         /// <returns>Не соответствующие друг другу автор и название книги</returns>
-        public static List<string> GeneratePlagiarism(List<string> titles, List<string> authors)
+        public List<string> GeneratePlagiarism(List<string> titles, List<string> authors)
         {
             // Перемешиваем списки
             Shuffle(titles);
@@ -55,7 +55,7 @@ namespace Lab3.BookStoreLibrary
         /// </summary>
         /// <param name="originalTitle">Оригинальное название</param>
         /// <returns>Название с опечаткой</returns>
-        public static string GenerateTypo(string originalTitle)
+        public string GenerateTypo(string originalTitle)
         {
             string[] validChars = { "а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и",
                 "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц",

@@ -26,6 +26,7 @@ public class Book
     public bool HasTypo { get; set; }    // Есть ли опечатка в названии
     public string? OriginalTitle { get; set; }  // Правильное название (если есть ошибка)
     public int EditionNumber { get; set; } = 1; // Номер издания (для сиквелов)
+    public decimal PurchasePrice { get; private set; }
 
 
     // Вычисляемое свойство для отображения названия с учётом сиквела
@@ -39,6 +40,7 @@ public class Book
         Genre = genre;
         PageCount = pageCount;
         Price = price;
+        PurchasePrice = price;
 
         IsPlagiarism = false;
         HasTypo = false;

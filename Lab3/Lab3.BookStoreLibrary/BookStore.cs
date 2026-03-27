@@ -27,8 +27,6 @@ public class BookStore
     public event Action? OnBalanceZero;
     public event Action? OnUnsatisfiedLimitReached;
 
-
-
     public IReadOnlyCollection<Bookshelf> Shelves => _shelves.AsReadOnly();
 
     /// <summary>
@@ -85,17 +83,28 @@ public class BookStore
     /// Метод обработки продажи книги
     /// </summary>
     /// <param name="book">Продаваемая книга</param>
-    public void ProcessSale(Book book)
+    public void ProcessSale(Book book, decimal? price)
     {
         // Поиск полки, на которой находится книга
         Bookshelf shelf = FindShelfWithBook(book);
         // Получение суммы продажи
         decimal saleAmount = book.Sell(shelf);
         // Обновление баланса магазина
-        Balance += saleAmount;
-
-
+        Balance += price ?? saleAmount;
     }
+
+    /// <summary>
+    /// Штраф за неудовлетворённого клиента или за неверную книгу
+    /// </summary>
+    /// <param name="amount">Количество средств</param>
+    public void Penalty(decimal amount) => Balance -= amount;
+
+    /// <summary>
+    /// Премия за поимку ошибки
+    /// </summary>
+    /// <param name="amount">Количество средств</param>
+    public void Award(decimal amount) => Balance += amount;
+
     /// <summary>
     /// Приватный метод поиска полки по книге
     /// </summary>
@@ -142,15 +151,10 @@ public class BookStore
     /// </summary>
     public bool IsPlagiarism(string title, string author)
     {
-        // Плагиат: такое название есть в базе, но с другим автором
         foreach (var (dbTitle, dbAuthor) in _knownBooks)
-        {
             if (string.Equals(dbTitle, title, StringComparison.OrdinalIgnoreCase) &&
                 !string.Equals(dbAuthor, author, StringComparison.OrdinalIgnoreCase))
-            {
                 return true;
-            }
-        }
         return false;
     }
 

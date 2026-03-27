@@ -41,12 +41,12 @@ namespace Lab3.BookStoreLibrary
 
             if (Type == RequestType.SpecificBook)
             {               
-                return string.Equals(book.Title, DesiredTitle, StringComparison.OrdinalIgnoreCase) &&  // проверка по названию и автору
+                return string.Equals(book.Title, DesiredTitle, StringComparison.OrdinalIgnoreCase) && // проверка по названию и автору
                        string.Equals(book.Author, DesiredAuthor, StringComparison.OrdinalIgnoreCase);
             }
             else if (Type == RequestType.Genre)
             { 
-                return string.Equals(book.Genre, DesiredGenre, StringComparison.OrdinalIgnoreCase);// проверка по жанру
+                return string.Equals(book.Genre, DesiredGenre, StringComparison.OrdinalIgnoreCase); // проверка по жанру
             }
 
             return false;
