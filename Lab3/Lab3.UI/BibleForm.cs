@@ -242,11 +242,11 @@ public partial class BibleForm : Form
 
         if (selectedCustomer.Type == RequestType.SpecificBook)
         {
-            lblCustomerRequest.Text = $"Ищет: {selectedCustomer.DesiredTitle}\nАвтор: {selectedCustomer.DesiredAuthor}";
+            lblCustomerRequest.Text = $"Ищет: {selectedCustomer.DesiredTitle}\nАвтор: {selectedCustomer.DesiredAuthor}\nУ него денег: {selectedCustomer.MaxPrice}";
         }
         else
         {
-            lblCustomerRequest.Text = $"Хочет любой жанр: {selectedCustomer.DesiredGenre}";
+            lblCustomerRequest.Text = $"Хочет любой жанр: {selectedCustomer.DesiredGenre}\nУ него денег: {selectedCustomer.MaxPrice}";
         }
 
         btnSellToCustomer.Visible = true;
@@ -728,6 +728,11 @@ public partial class BibleForm : Form
         if (!customer.CheckPrice(salePrice))
         {
             MessageBox.Show("У покупателя не хватает денег на эту цену. Он уходит.");
+            _customerQueue.CustomerLeavesUnsatisfied(customer);
+        }
+        else if (salePrice > maxAllowedPrice)
+        {
+            MessageBox.Show($"Слишком дорого! Покупатель возмущен (макс. цена: {maxAllowedPrice:F2}) и уходит.");
             _customerQueue.CustomerLeavesUnsatisfied(customer);
         }
         else

@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Lab3.BookStoreLibrary
 {
-    public enum RequestType   // Тип запроса покупателя 
+    public enum RequestType // Тип запроса покупателя 
     {
-        SpecificBook,// Хочет конкретную книгу
+        SpecificBook, // Хочет конкретную книгу
         Genre // Хочет любой жанр
     }
+
     public class Customer
     {
         public int Id { get; private set; } // Уникальный номер
@@ -17,9 +18,9 @@ namespace Lab3.BookStoreLibrary
         
         public string? DesiredTitle { get; private set; } // Для SpecificBook
         public string? DesiredAuthor { get; private set; }       
-        public string? DesiredGenre { get; private set; }// Для Genre
+        public string? DesiredGenre { get; private set; } // Для Genre
         public decimal MaxPrice { get; private set; } // Макс. цена, которую готов заплатить
-        public bool IsServed { get; private set; } = false;//статус
+        public bool IsServed { get; private set; } = false; // статус
         public bool IsLeaving { get; private set; } = false;
 
         public Customer(int id, RequestType type, string? title, string? author, string? genre, decimal willingToPay)
