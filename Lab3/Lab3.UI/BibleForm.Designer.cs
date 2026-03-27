@@ -285,7 +285,7 @@ partial class BibleForm
         // 
         // buttonGenerate
         // 
-        buttonGenerate.Location = new Point(492, 168);
+        buttonGenerate.Location = new Point(492, 86);
         buttonGenerate.Name = "buttonGenerate";
         buttonGenerate.Size = new Size(103, 59);
         buttonGenerate.TabIndex = 14;
@@ -295,7 +295,7 @@ partial class BibleForm
         // 
         // btnAddNewBook
         // 
-        btnAddNewBook.Location = new Point(492, 89);
+        btnAddNewBook.Location = new Point(492, 154);
         btnAddNewBook.Name = "btnAddNewBook";
         btnAddNewBook.Size = new Size(103, 73);
         btnAddNewBook.TabIndex = 13;

@@ -5,14 +5,18 @@ namespace Lab3.BookStoreLibraryTests;
 
 public class CustomerTest
 {
-   
 
+    /// <summary>
+    /// Проверяет правильно ли CheckPrice возвращает true - купит или false - слишком дорого значит не купит
+    /// </summary>
+    /// <param name="salePrice"></param>
+    /// <param name="maxPrice"></param>
+    /// <param name="expected"></param>
     [Theory]
     [InlineData(100, 100, true)] // цена равна пределу
     [InlineData(80, 100, true)] // цена ниже предела
     [InlineData(110, 100, false)] // цена выше предела
     public void CheckPrice_ValidatesCorrectly(decimal salePrice, decimal maxPrice, bool expected)
-    //проверяет правильно ли CheckPrice возвращает true - купит или false - слишком дорого значит не купит
     {
         // arrange
         var customer = new Customer(3, RequestType.Genre, null, null, "Sci-Fi", maxPrice);
@@ -23,7 +27,7 @@ public class CustomerTest
     }
 
     [Fact]
-    public void Serve_SetsCorrectStatus()//проверяет успешную продажу
+    public void Serve_SetsCorrectStatus() // проверяет успешную продажу
     {
         // arrange
         var customer = new Customer(4, RequestType.Genre, null, null, "Drama", 300);
@@ -35,7 +39,7 @@ public class CustomerTest
     }
 
     [Fact]
-    public void LeaveUnsatisfied_SetsCorrectStatus()//проверяет уход без покупки
+    public void LeaveUnsatisfied_SetsCorrectStatus() // проверяет уход без покупки
     {
         // arrange
         var customer = new Customer(5, RequestType.SpecificBook, "1984", "Orwell", null, 400);
@@ -47,7 +51,7 @@ public class CustomerTest
     }
 
     [Fact]
-    public void CheckBook_ReturnsFalse_IfBookIsNull()//передает null вместо реальной книги
+    public void CheckBook_ReturnsFalse_IfBookIsNull() // передает null вместо реальной книги
     {
         // arrange
         var customer = new Customer(6, RequestType.Genre, null, null, "Horror", 200);

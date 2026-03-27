@@ -35,9 +35,23 @@ public class BookStore
     /// Конструктор класса BookStore
     /// </summary>
     /// <param name="maxShelves">Максимальное количество полок</param>
-    public BookStore(int maxShelves)
+    public BookStore(int maxShelves, Difficulty difficulty)
     {
         MaxShelves = maxShelves;
+        switch (difficulty)
+        {
+            case Difficulty.Easy:
+                Balance = 1000m;
+                break;
+            case Difficulty.Normal:
+                Balance = 500m;
+                break;
+            case Difficulty.Hard:
+                Balance = 200m;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(difficulty), difficulty, null);
+        }
     }
 
     /// <summary>

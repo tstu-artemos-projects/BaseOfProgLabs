@@ -1,4 +1,5 @@
 using Lab3.BookStoreLibrary;
+using System.Runtime;
 
 namespace Lab3.UI;
 
@@ -14,7 +15,267 @@ public partial class BibleForm : Form
     private readonly string[] _randomBookNameBase;
     private readonly string[] _randomGenreBase;
 
-    private readonly Difficulty _difficulty;
+    private readonly CustomerQueue _customerQueue;
+    private readonly BookMismatch _mismatchLogic = new();
+    private readonly GameSettings _settings;
+    private readonly GameStats _stats = new();
+    private int _remainingTime;
+
+    private const int DeliveryDelay = 10;
+    private readonly List<(Book Book, int ArrivalTick)> _shippingOrders = new();
+
+    private System.Windows.Forms.Timer _deliveryTimer;
+    private System.Windows.Forms.Timer _customerTimer;
+    private System.Windows.Forms.Timer _gameTickTimer;
+
+    public BibleForm(Difficulty difficulty)
+    {
+        _randomGenreBase = DatabaseProcessing.ReadGenres();
+        var dataBase = DatabaseProcessing.InitDatabase();
+
+        (_randomBookNameBase, _randomAuthorBase) = DatabaseProcessing.SplitBookTitlingRecord(dataBase);
+
+        _store = new BookStore(MaxShelves, difficulty);
+        _settings = GameSettings.GetByDifficulty(difficulty);
+        _customerQueue = new CustomerQueue(_settings.MaxQueue);
+
+        InitializeComponent();
+
+        comboBoxType.Items.AddRange(_randomGenreBase);
+        SetupGame();
+    }
+
+    #region Игровая логика
+    private void SetupGame()
+    {
+        _customerQueue.QueueLimitReached += () => EndGame("Очередь переполнена!");
+        _customerQueue.UnsatisfiedLimitReached += () => EndGame("Слишком много недовольных клиентов!");
+
+        _deliveryTimer = new System.Windows.Forms.Timer { Interval = _settings.DeliveryInterval };
+        _deliveryTimer.Tick += OnDeliveryTick;
+
+        _customerTimer = new System.Windows.Forms.Timer { Interval = _settings.CustomerInterval };
+        _customerTimer.Tick += OnCustomerTick;
+
+
+        _gameTickTimer = new System.Windows.Forms.Timer { Interval = _settings.DayDurationSeconds * 1000 };
+        _gameTickTimer.Tick += OnGameTick;
+
+
+        _deliveryTimer.Start();
+        _customerTimer.Start();
+        _gameTickTimer.Start();
+
+        UpdateStatsLabel();
+    }
+
+    private void OnGameTick(object? sender, EventArgs e)
+    {
+        _remainingTime--;
+
+        if (_remainingTime <= 0)
+        {
+            EndGame("Рабочий день окончен! Вы победили!", isVictory: true);
+        }
+
+        if (_store.Balance <= 0)
+        {
+            EndGame("Банкротство! Баланс исчерпан.");
+        }
+
+        UpdateStatsLabel();
+    }
+
+    private void OnDeliveryTick(object? sender, EventArgs e)
+    {
+        //var records = DatabaseProcessing.InitDatabase();
+        //if (records.Length <= 0)
+        //    return;
+        //var record = records[new Random().Next(records.Length)];
+
+        //Book deliveryBook = new Book(record.Title, record.Author,
+        //                             _randomGenreBase[new Random().Next(_randomGenreBase.Length)],
+        //                             new Random().Next(100, 500),
+        //                             new Random().Next(200, 1000));
+
+        //// С шансом 30% создаем ошибку
+        //int chance = new Random().Next(100);
+        //if (chance < 15) // Плагиат
+        //{
+        //    var otherRecord = records[new Random().Next(records.Length)];
+        //    var fakeData = _mismatchLogic.GeneratePlagiarism(records.Select(r => r.Title).ToList(), records.Select(r => r.Author).ToList());
+        //    deliveryBook = new Book(fakeData[0], fakeData[1], deliveryBook.Genre, deliveryBook.PageCount, deliveryBook.Price);
+        //    deliveryBook.IsPlagiarism = true;
+        //}
+        //else if (chance < 30) // Опечатка
+        //{
+        //    string typoTitle = _mismatchLogic.GenerateTypo(deliveryBook.Title);
+        //    deliveryBook = new Book(typoTitle, deliveryBook.Author, deliveryBook.Genre, deliveryBook.PageCount, deliveryBook.Price);
+        //    deliveryBook.HasTypo = true;
+        //}
+
+        //_store.IncomingBooks.Enqueue(deliveryBook);
+
+        //if (!tabControlNewBook.TabPages.Contains(tabDeliveries))
+        //    tabControlNewBook.TabPages.Add(tabDeliveries);
+
+        //UpdateDeliveryUI();
+
+        var book = _incomingBooks.Dequeue();
+        if (book == null)
+            return;
+
+    }
+
+
+    private void OnCustomerTick(object? sender, EventArgs e)
+    {
+        var rnd = new Random();
+        Customer customer;
+
+        if (rnd.Next(2) == 0) // Хочет конкретную книгу
+        {
+            var records = DatabaseProcessing.InitDatabase();
+            var record = records[rnd.Next(records.Length)];
+            customer = new Customer(rnd.Next(1000), RequestType.SpecificBook, record.Title, record.Author, null, rnd.Next(500, 2000));
+        }
+        else // Хочет жанр
+            customer = new Customer(rnd.Next(1000), RequestType.Genre, null, null, _randomGenreBase[rnd.Next(_randomGenreBase.Length)], rnd.Next(300, 1500));
+
+        if (_customerQueue.Enqueue(customer))
+            UpdateCustomerListUI();
+    }
+
+    private void EndGame(string reason, bool isVictory = false)
+    {
+        _deliveryTimer.Stop();
+        _customerTimer.Stop();
+        _gameTickTimer.Stop();
+
+        string message = $"{(isVictory ? "ПОБЕДА!" : "ИГРА ОКОНЧЕНА")}\nПричина: {reason}\n\n" +
+                         $"Статистика:\n" +
+                         $"- Книг продано: {_stats.BooksSold}\n" +
+                         $"- Ошибок выявлено: {_stats.ErrorsCaught}\n" +
+                         $"- Финальный баланс: {_store.Balance} руб.\n" +
+                         $"- Штрафов выплачено: {_stats.FinesPaid} руб.";
+
+        MessageBox.Show(message, "Результаты дня", MessageBoxButtons.OK, isVictory ? MessageBoxIcon.Information : MessageBoxIcon.Warning);
+        this.Close();
+    }
+    #endregion
+
+    #region Игровой UI
+
+    private void UpdateDeliveryUI()
+    {
+        if (_store.IncomingBooks.Count == 0)
+        {
+            if (tabControlNewBook.TabPages.Contains(tabDeliveries))
+                tabControlNewBook.TabPages.Remove(tabDeliveries);
+            return;
+        }
+
+        if (!tabControlNewBook.TabPages.Contains(tabDeliveries))
+            tabControlNewBook.TabPages.Add(tabDeliveries);
+
+        Book currentBook = _store.IncomingBooks.Peek();
+
+        txtDeliveryTitle.Text = currentBook.Title;
+        txtDeliveryAuthor.Text = currentBook.Author;
+        txtDeliveryGenre.Text = currentBook.Genre;
+        txtDeliveryPrice.Text = currentBook.Price.ToString("F2");
+
+        rbCorrect.Checked = true;
+
+        lblStatus.Text = $"Книг в очереди на проверку: {_store.IncomingBooks.Count}";
+    }
+
+    private void UpdateStatsLabel()
+    {
+        labelStats.Text = $"" +
+            $"Время: {_remainingTime}с | " +
+            $"Баланс: {_store.Balance}₽ | " +
+            $"Очередь: {_customerQueue.Count}/{_settings.MaxQueue} | " +
+            $"Недовольные: {_customerQueue.UnsatisfiedCount}/{_settings.MaxUnsatisfied}";
+    }
+
+    private void UpdateCustomerListUI()
+    {
+        var customers = _customerQueue.GetQueueSnapshot();
+
+        if (customers.Count == 0)
+        {
+            lblNoCustomers.Visible = true;
+            pnlCustomerProcessing.Visible = false;
+            lstCustomerQueue.Items.Clear();
+        }
+        else
+        {
+            lblNoCustomers.Visible = false;
+            pnlCustomerProcessing.Visible = true;
+
+            lstCustomerQueue.Items.Clear();
+            foreach (var customer in customers)
+            {
+                string requestInfo = customer.Type == RequestType.SpecificBook
+                    ? $"Книга: {customer.DesiredTitle}"
+                    : $"Жанр: {customer.DesiredGenre}";
+
+                lstCustomerQueue.Items.Add($"Покупатель #{customer.Id} [{requestInfo}]");
+            }
+
+            if (lstCustomerQueue.SelectedIndex == -1)
+                lstCustomerQueue.SelectedIndex = 0;
+
+            UpdateSelectedCustomerDetails();
+        }
+
+        UpdateStatsLabel();
+    }
+
+    private void UpdateSelectedCustomerDetails()
+    {
+        if (lstCustomerQueue.SelectedIndex == -1) return;
+
+        var customers = _customerQueue.GetQueueSnapshot();
+        var selectedCustomer = customers[lstCustomerQueue.SelectedIndex];
+
+        lblCustomerRequest.Visible = true;
+        lblUnsatisfiedCount.Visible = true;
+
+        if (selectedCustomer.Type == RequestType.SpecificBook)
+        {
+            lblCustomerRequest.Text = $"Ищет: {selectedCustomer.DesiredTitle}\nАвтор: {selectedCustomer.DesiredAuthor}";
+        }
+        else
+        {
+            lblCustomerRequest.Text = $"Хочет любой жанр: {selectedCustomer.DesiredGenre}";
+        }
+
+        btnSellToCustomer.Visible = true;
+        btnCancelCustomer.Visible = true;
+        cmbAvailableBooks.Visible = true;
+
+        RefreshAvailableBooksForCustomer(selectedCustomer);
+    }
+
+    private void RefreshAvailableBooksForCustomer(Customer customer)
+    {
+        cmbAvailableBooks.Items.Clear();
+
+        foreach (var shelf in _store.Shelves)
+            foreach (var book in shelf.Books)
+                if (customer.CheckBook(book))
+                    cmbAvailableBooks.Items.Add(book);
+
+        if (cmbAvailableBooks.Items.Count > 0)
+        {
+            cmbAvailableBooks.DisplayMember = "DisplayTitle";
+            cmbAvailableBooks.SelectedIndex = 0;
+        }
+    }
+
+    #endregion
 
     private void tabControlNewBook_DrawItem(object sender, DrawItemEventArgs e)
     {
@@ -41,21 +302,6 @@ public partial class BibleForm : Form
 
             TextRenderer.DrawText(e.Graphics, page.Text, tc.Font, rect, textColor, TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter);
         }
-    }
-
-    public BibleForm(Difficulty difficulty)
-    {
-        _randomGenreBase = DatabaseProcessing.ReadGenres();
-        var dataBase = DatabaseProcessing.InitDatabase();
-
-        (_randomBookNameBase, _randomAuthorBase) = DatabaseProcessing.SplitBookTitlingRecord(dataBase);
-
-        _store = new BookStore(MaxShelves);
-        _difficulty = difficulty;
-
-        InitializeComponent();
-
-        comboBoxType.Items.AddRange(_randomGenreBase);
     }
 
     private void buttonGenerate_Click(object sender, EventArgs e)
@@ -308,11 +554,12 @@ public partial class BibleForm : Form
             Bookshelf shelf = GetOrCreateShelf(genre);
 
             Book newBook = new Book(title, author, genre, pages, price);
-            shelf.AddBook(newBook);
+            //shelf.AddBook(newBook);
 
-            labelIDforUsing.Text = newBook.Id.ToString();
-            UpdateMarketUI();
-            MessageBox.Show($"Книга '{title}' успешно добавлена!", "Успех");
+            //labelIDforUsing.Text = newBook.Id.ToString();
+            //UpdateMarketUI();
+            MessageBox.Show($"Книга '{title}' успешно заказана! Ждите её", "Успех");
+            _incomingBooks.Enqueue(newBook);
         }
         catch (Exception ex)
         {
@@ -347,8 +594,6 @@ public partial class BibleForm : Form
 
         btnSell.Tag = book;
     }
-
-
 
     private void btnBackToSearch_Click(object sender, EventArgs e)
     {

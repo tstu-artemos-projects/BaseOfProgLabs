@@ -10,12 +10,12 @@ namespace Lab3.Tests
         public void Enqueue_AddsCustomer_WhenSpaceAvailable()
         {
             // arrange
-            var queue = new CustomerQueue(maxCapacity: 2);//создаём очередь на 2 места 
-            var customer = new Customer(1, RequestType.Genre, null, null, "Fantasy", 500);//и создаём 1 человека
+            var queue = new CustomerQueue(maxCapacity: 2); // создаём очередь на 2 места 
+            var customer = new Customer(1, RequestType.Genre, null, null, "Fantasy", 500); // и создаём 1 человека
             // act
             bool result = queue.Enqueue(customer);
             // assert
-            Assert.True(result);// проверяем, что метод вернул true и сount = 1
+            Assert.True(result); // проверяем, что метод вернул true и сount = 1
             Assert.Equal(1, queue.Count);
         }
 
@@ -27,7 +27,7 @@ namespace Lab3.Tests
             var customer1 = new Customer(1, RequestType.Genre, null, null, "Fantasy", 500);
             var customer2 = new Customer(2, RequestType.Genre, null, null, "Sci-Fi", 300);
             bool eventRaised = false;
-            queue.QueueLimitReached += () => eventRaised = true;//забиваем очередь до максимума и пытаемся добавить еще одного
+            queue.QueueLimitReached += () => eventRaised = true; // забиваем очередь до максимума и пытаемся добавить еще одного
             // act
             queue.Enqueue(customer1);
             bool result = queue.Enqueue(customer2);
@@ -39,7 +39,7 @@ namespace Lab3.Tests
         [Fact]
         public void ServeCustomer_RemovesSpecificCustomer_AndSetsStatus()
         {
-            //проверяет, что  покупатель исчез из очереди и у объекта покупателя вызвался метод Serve и IsServed стал true
+            // проверяет, что покупатель исчез из очереди и у объекта покупателя вызвался метод Serve и IsServed стал true
             
             // arrange
             var queue = new CustomerQueue();
@@ -54,9 +54,9 @@ namespace Lab3.Tests
         }
 
         [Fact]
-        public void CustomerLeavesUnsatisfied_IncrementsCounter_AndTriggersLimitEvent()// проверяем предел недовольных клиентов
+        public void CustomerLeavesUnsatisfied_IncrementsCounter_AndTriggersLimitEvent() // проверяем предел недовольных клиентов
         {
-            //a rrange
+            // arrange
             var queue = new CustomerQueue();
             var c1 = new Customer(1, RequestType.Genre, null, null, "G1", 100);
             var c2 = new Customer(2, RequestType.Genre, null, null, "G2", 100);
