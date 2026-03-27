@@ -234,7 +234,7 @@ public partial class BibleForm : Form
     private void UpdateMarketUI()
     {
         // Обновляем баланс
-        labelBalanceUsed.Text = $"{_store.Balance} руб.";
+        //labelBalanceUsed.Text = $"{_store.Balance} руб.";
 
         // Обновляем список доступных жанров (шкафов) в магазине
         var currentGenre = comboBoxJanr.SelectedItem?.ToString();
@@ -419,6 +419,16 @@ public partial class BibleForm : Form
     }
 
     private void btnRejectDelivery_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void labelMarket_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void panel2_Paint(object sender, PaintEventArgs e)
     {
 
     }
