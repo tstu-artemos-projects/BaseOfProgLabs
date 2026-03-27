@@ -22,7 +22,9 @@ public class BookMismatchTest
     [Fact]
     public void GeneratePlagiarism_ReturnsDifferentAuthorAndTitle()
     {
-        List <string> res = BookMismatch.GeneratePlagiarism(
+        var bookMismatch = new BookMismatch();
+
+        List <string> res = bookMismatch.GeneratePlagiarism(
             _titles.ToList(),
             _authors.ToList());
         Assert.True(_titles.Contains(res[0]));
@@ -40,8 +42,9 @@ public class BookMismatchTest
     [Fact]
     public void GenerateTypo_CreatesValidTypo()
     {
+        var bookMismatch = new BookMismatch();
         string original = "1984";
-        string typo = BookMismatch.GenerateTypo(original);
+        string typo = bookMismatch.GenerateTypo(original);
 
         Assert.True(typo.Length == original.Length);
         Assert.False(typo == original);
