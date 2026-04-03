@@ -321,6 +321,7 @@ partial class BibleForm
         numericUpDownPrice.Name = "numericUpDownPrice";
         numericUpDownPrice.Size = new Size(154, 23);
         numericUpDownPrice.TabIndex = 11;
+        numericUpDownPrice.Minimum = 25.00m;
         // 
         // labelPrice
         // 
@@ -347,6 +348,7 @@ partial class BibleForm
         numericUpDownPages.Name = "numericUpDownPages";
         numericUpDownPages.Size = new Size(143, 23);
         numericUpDownPages.TabIndex = 8;
+        numericUpDownPages.Minimum = 20m;
         // 
         // labelType
         // 
