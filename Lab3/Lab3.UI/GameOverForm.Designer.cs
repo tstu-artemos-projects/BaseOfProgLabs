@@ -2,7 +2,7 @@
 
 namespace Lab3.UI;
 
-partial class GameOver
+partial class GameOverForm
 {
     /// <summary>
     /// Required designer variable.
