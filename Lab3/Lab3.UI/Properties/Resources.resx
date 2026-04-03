@@ -127,4 +127,10 @@
   <data name="b2dffd3b7b204e29e4c4b67d977199a11" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\b2dffd3b7b204e29e4c4b67d977199a11.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="DefeatPig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DefeatPig.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WinPig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WinPig.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
