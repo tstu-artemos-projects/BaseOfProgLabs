@@ -11,6 +11,7 @@ namespace Lab3.BookStoreLibrary
     {
         private readonly Queue<Customer> _queue;
         private readonly int _maxCapacity; // предел очереди (зависит от сложности)
+        private readonly int _maxUnsatisfiedCapacity; // предел очереди (зависит от сложности)
         private int _unsatisfiedCount; // счётчик неудовлетворённых клиентов
 
         public int Count => _queue.Count;
@@ -28,7 +29,8 @@ namespace Lab3.BookStoreLibrary
 
 
         /// <param name="maxCapacity">Макс. длина очереди (3-5 в зависимости от сложности)</param>
-        public CustomerQueue(int maxCapacity = 5)
+        /// <param name="maxUnsatisfiedCapacity">Максимальное количество недовольных</param>
+        public CustomerQueue(int maxCapacity = 5, int maxUnsatisfiedCapacity = 5)
         {
             if (maxCapacity < 1)
                 throw new ArgumentOutOfRangeException(nameof(maxCapacity));
@@ -36,6 +38,7 @@ namespace Lab3.BookStoreLibrary
             _maxCapacity = maxCapacity;
             _queue = new Queue<Customer>();
             _unsatisfiedCount = 0;
+            _maxUnsatisfiedCapacity = maxUnsatisfiedCapacity;
         }
 
         // управление очередью
@@ -117,7 +120,7 @@ namespace Lab3.BookStoreLibrary
             customer.LeaveUnsatisfied();
             _unsatisfiedCount++;            
             ServeCustomer(customer); // Удаляем покупателя из очереди
-            if (_unsatisfiedCount >= 3)
+            if (_unsatisfiedCount >= _maxUnsatisfiedCapacity)
             {
                 UnsatisfiedLimitReached?.Invoke();
                 return true; // Проигрыш

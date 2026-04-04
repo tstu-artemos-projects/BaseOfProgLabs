@@ -22,8 +22,6 @@ public partial class BibleForm : Form
     private readonly GameStats _stats = new();
     private int _remainingTime;
 
-    private const int DeliveryDelay = 10;
-
     private System.Windows.Forms.Timer _customerTimer;
     private System.Windows.Forms.Timer _gameTickTimer;
     private System.Windows.Forms.Timer _randomDeliveryTimer;
@@ -39,7 +37,7 @@ public partial class BibleForm : Form
 
         _store = new BookStore(MaxShelves, difficulty);
         _settings = GameSettings.GetByDifficulty(difficulty);
-        _customerQueue = new CustomerQueue(_settings.MaxQueue);
+        _customerQueue = new CustomerQueue(_settings.MaxQueue, _settings.MaxUnsatisfied);
 
         InitializeComponent();
         tabControlNewBook.TabPages.Remove(tabDeliveries);
@@ -81,7 +79,7 @@ public partial class BibleForm : Form
         int chance = new Random().Next(100);
         if (chance < 20) // Плагиат
         {
-            var otherRecord = records[new Random().Next(records.Length)];
+            // var otherRecord = records[new Random().Next(records.Length)];
             var fakeData = _mismatchLogic.GeneratePlagiarism(records.Select(r => r.Title).ToList(), records.Select(r => r.Author).ToList());
             deliveryBook = new Book(fakeData[0], fakeData[1], deliveryBook.Genre, deliveryBook.PageCount, deliveryBook.Price);
             deliveryBook.IsPlagiarism = true;
@@ -151,15 +149,7 @@ public partial class BibleForm : Form
 
         GameOverForm.Show(isVictory ? GameOverType.Victory : GameOverType.Defeat, stats, reason);
         
-        // string message = $"{(isVictory ? "ПОБЕДА!" : "ИГРА ОКОНЧЕНА")}\nПричина: {reason}\n\n" +
-        //                  $"Статистика:\n" +
-        //                  $"- Книг продано: {_stats.BooksSold}\n" +
-        //                  $"- Ошибок выявлено: {_stats.ErrorsCaught}\n" +
-        //                  $"- Финальный баланс: {_store.Balance} руб.\n" +
-        //                  $"- Штрафов выплачено: {_stats.FinesPaid} руб.";
-        //
-        // MessageBox.Show(message, "Результаты дня", MessageBoxButtons.OK, isVictory ? MessageBoxIcon.Information : MessageBoxIcon.Warning);
-        this.Close();
+        Close();
     }
     #endregion
 
@@ -372,7 +362,7 @@ public partial class BibleForm : Form
         // Если шкафа нет, пытаемся добавить новый
         if (_store.Shelves.Count < _store.MaxShelves)
         {
-            var newShelf = new Bookshelf(genre, 10); // Вместимость 10 книг
+            var newShelf = new Bookshelf(genre, 10);
             _store.AddShelf(newShelf);
             return newShelf;
         }
@@ -692,15 +682,14 @@ public partial class BibleForm : Form
 
             _stats.ErrorsCaught++;
             MessageBox.Show($"Верно! Вы нашли брак. Премия: {bonus} руб.");
-
-            UpdateDeliveryUI();
         }
         else if (!currentBook.HasTypo && !currentBook.IsPlagiarism)
         {
             // Игрок отклонил хорошую книгу
             MessageBox.Show("Вы отклонили качественную книгу. Деньги за заказ не возвращаются.");
         }
-
+        
+        UpdateDeliveryUI();
     }
 
     private void RefreshAvailableBooks(Customer customer)
