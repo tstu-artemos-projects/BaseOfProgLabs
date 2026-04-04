@@ -32,6 +32,8 @@ public partial class BibleForm : Form
     {
         _genreBase = DatabaseProcessing.ReadGenres();
         _randomBookTitlingBase = DatabaseProcessing.InitDatabase();
+        
+        // Console.WriteLine(_randomBookTitlingBase);
 
         // (_randomBookNameBase, _randomAuthorBase) = DatabaseProcessing.SplitBookTitlingRecord(dataBase);
 
@@ -138,15 +140,25 @@ public partial class BibleForm : Form
     {
         _customerTimer.Stop();
         _gameTickTimer.Stop();
+        
+        var stats = new GameOverStats()
+        {
+            BooksSold = _stats.BooksSold,
+            FinalBalance = _store.Balance,
+            FinesPaid = _stats.FinesPaid,
+            MismatchCaught = _stats.ErrorsCaught
+        };
 
-        string message = $"{(isVictory ? "ПОБЕДА!" : "ИГРА ОКОНЧЕНА")}\nПричина: {reason}\n\n" +
-                         $"Статистика:\n" +
-                         $"- Книг продано: {_stats.BooksSold}\n" +
-                         $"- Ошибок выявлено: {_stats.ErrorsCaught}\n" +
-                         $"- Финальный баланс: {_store.Balance} руб.\n" +
-                         $"- Штрафов выплачено: {_stats.FinesPaid} руб.";
-
-        MessageBox.Show(message, "Результаты дня", MessageBoxButtons.OK, isVictory ? MessageBoxIcon.Information : MessageBoxIcon.Warning);
+        GameOverForm.Show(isVictory ? GameOverType.Victory : GameOverType.Defeat, stats, reason);
+        
+        // string message = $"{(isVictory ? "ПОБЕДА!" : "ИГРА ОКОНЧЕНА")}\nПричина: {reason}\n\n" +
+        //                  $"Статистика:\n" +
+        //                  $"- Книг продано: {_stats.BooksSold}\n" +
+        //                  $"- Ошибок выявлено: {_stats.ErrorsCaught}\n" +
+        //                  $"- Финальный баланс: {_store.Balance} руб.\n" +
+        //                  $"- Штрафов выплачено: {_stats.FinesPaid} руб.";
+        //
+        // MessageBox.Show(message, "Результаты дня", MessageBoxButtons.OK, isVictory ? MessageBoxIcon.Information : MessageBoxIcon.Warning);
         this.Close();
     }
     #endregion

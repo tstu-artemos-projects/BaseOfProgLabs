@@ -39,7 +39,11 @@ public class DatabaseProcessing
 
         for (int i = 0; i + 2 < lines.Length; i += 3)
         {
-            records.Add(new BookTitlingRecord(lines[i], lines[i + 1], lines[i + 2]));
+            string title = lines[i];
+            string author = lines[i + 1];
+            string genre = lines[i + 2];
+            
+            records.Add(new BookTitlingRecord(title, author, genre));
         }
 
         return records.ToArray();

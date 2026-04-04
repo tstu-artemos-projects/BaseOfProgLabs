@@ -60,12 +60,15 @@ public class Book
     public static Book RandomBookFromDatabase(BookTitlingRecord[] bookTitling)
     {
         var random = new Random();
+
+        var randomTitle = bookTitling[random.Next(0, bookTitling.Length)];
+        
         return new Book(
-            title: bookTitling[random.Next(0, bookTitling.Length)].Title,
-            author: bookTitling[random.Next(0, bookTitling.Length)].Author,
-            genre: bookTitling[random.Next(0, bookTitling.Length)].Genre,
-            pageCount: random.Next(100, 2000),
-            price: random.Next(100, 5000)
+            title: randomTitle.Title,
+            author: randomTitle.Author,
+            genre: randomTitle.Genre,
+            pageCount: random.Next(20, 2000),
+            price: random.Next(25, 1000)
         );
     }
 
