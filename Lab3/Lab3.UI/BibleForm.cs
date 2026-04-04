@@ -11,9 +11,10 @@ public partial class BibleForm : Form
     private const int MaxShelves = 5;
     private const int MaxBooksInShelves = 5;
 
-    private readonly string[] _randomAuthorBase;
-    private readonly string[] _randomBookNameBase;
-    private readonly string[] _randomGenreBase;
+    // private readonly string[] _randomAuthorBase;
+    // private readonly string[] _randomBookNameBase;
+    private readonly string[] _genreBase;
+    private readonly BookTitlingRecord[] _randomBookTitlingBase;
 
     private readonly CustomerQueue _customerQueue;
     private readonly BookMismatch _mismatchLogic = new();
@@ -22,7 +23,6 @@ public partial class BibleForm : Form
     private int _remainingTime;
 
     private const int DeliveryDelay = 10;
-    private readonly List<(Book Book, int ArrivalTick)> _shippingOrders = new();
 
     private System.Windows.Forms.Timer _customerTimer;
     private System.Windows.Forms.Timer _gameTickTimer;
@@ -30,10 +30,10 @@ public partial class BibleForm : Form
 
     public BibleForm(Difficulty difficulty)
     {
-        _randomGenreBase = DatabaseProcessing.ReadGenres();
-        var dataBase = DatabaseProcessing.InitDatabase();
+        _genreBase = DatabaseProcessing.ReadGenres();
+        _randomBookTitlingBase = DatabaseProcessing.InitDatabase();
 
-        (_randomBookNameBase, _randomAuthorBase) = DatabaseProcessing.SplitBookTitlingRecord(dataBase);
+        // (_randomBookNameBase, _randomAuthorBase) = DatabaseProcessing.SplitBookTitlingRecord(dataBase);
 
         _store = new BookStore(MaxShelves, difficulty);
         _settings = GameSettings.GetByDifficulty(difficulty);
@@ -42,7 +42,7 @@ public partial class BibleForm : Form
         InitializeComponent();
         tabControlNewBook.TabPages.Remove(tabDeliveries);
 
-        comboBoxType.Items.AddRange(_randomGenreBase);
+        comboBoxType.Items.AddRange(_genreBase);
         SetupGame();
     }
 
@@ -73,13 +73,8 @@ public partial class BibleForm : Form
     private void OnRandomDeliveryTick(object? sender, EventArgs e)
     {
         var records = DatabaseProcessing.InitDatabase();
-        var record = records[new Random().Next(records.Length)];
 
-
-        Book deliveryBook = new Book(record.Title, record.Author,
-                                     _randomGenreBase[new Random().Next(_randomGenreBase.Length)],
-                                     new Random().Next(100, 500),
-                                     new Random().Next(100, 500));
+        Book deliveryBook = Book.RandomBookFromDatabase(records);
 
         int chance = new Random().Next(100);
         if (chance < 20) // Плагиат
@@ -133,7 +128,7 @@ public partial class BibleForm : Form
             customer = new Customer(rnd.Next(1000), RequestType.SpecificBook, record.Title, record.Author, null, rnd.Next(500, 2000));
         }
         else // Хочет жанр
-            customer = new Customer(rnd.Next(1000), RequestType.Genre, null, null, _randomGenreBase[rnd.Next(_randomGenreBase.Length)], rnd.Next(300, 1500));
+            customer = new Customer(rnd.Next(1000), RequestType.Genre, null, null, _genreBase[rnd.Next(_genreBase.Length)], rnd.Next(300, 1500));
 
         if (_customerQueue.Enqueue(customer))
             UpdateCustomerListUI();
@@ -296,10 +291,11 @@ public partial class BibleForm : Form
     #region UI логика для заказа книги
     private void buttonGenerate_Click(object sender, EventArgs e)
     {
-        if (_randomGenreBase.Length == 0 || _randomAuthorBase.Length == 0 || _randomBookNameBase.Length == 0) return;
+        if (_randomBookTitlingBase.Length == 0) return;
 
-        var randomBook = Book.GenerateRandomBook(_randomBookNameBase, _randomAuthorBase, _randomGenreBase);
-
+        // var randomBook = Book.GenerateRandomBook(_randomBookNameBase, _randomAuthorBase, _randomGenreBase);
+        var randomBook = Book.RandomBookFromDatabase(_randomBookTitlingBase);
+        
         textBoxTitleBook.Text = randomBook.Title;
         textBoxAutor.Text = randomBook.Author;
         comboBoxType.SelectedItem = randomBook.Genre;

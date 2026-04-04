@@ -32,7 +32,9 @@ public class BookTest
         string[] testAuthors = { "Автор1", "Автор2" };
         string[] testGenres = { "Жанр1", "Жанр2" };
 
-        var randomBook = Book.GenerateRandomBook(testNames, testAuthors, testGenres);
+        var randomBook = Book.RandomBookFromDatabase(
+            testNames.Select((value, index) => new BookTitlingRecord(value, testAuthors[index], testGenres[index])).ToArray()
+        );
 
         Assert.NotNull(randomBook);
         Assert.Contains(randomBook.Title, testNames);

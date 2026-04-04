@@ -362,4 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+./Lab3/Lab3.UI/Database.txt
+
 coverage/

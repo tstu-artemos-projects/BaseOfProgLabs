@@ -57,13 +57,13 @@ public class Book
     /// <param name="bookNames">Массив названий книг для случайного выбора</param>
     /// <param name="genres">Массив жанров для случайного выбора</param>
     /// <returns>Объект книги с случайными параметрами</returns>
-    public static Book GenerateRandomBook(string[] bookNames, string[] authors, string[] genres)
+    public static Book RandomBookFromDatabase(BookTitlingRecord[] bookTitling)
     {
         var random = new Random();
         return new Book(
-            title: bookNames[random.Next(0, bookNames.Length)],
-            author: authors[random.Next(0, authors.Length)],
-            genre: genres[random.Next(0, genres.Length)],
+            title: bookTitling[random.Next(0, bookTitling.Length)].Title,
+            author: bookTitling[random.Next(0, bookTitling.Length)].Author,
+            genre: bookTitling[random.Next(0, bookTitling.Length)].Genre,
             pageCount: random.Next(100, 2000),
             price: random.Next(100, 5000)
         );
