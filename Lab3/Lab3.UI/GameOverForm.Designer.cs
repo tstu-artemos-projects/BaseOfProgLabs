@@ -31,27 +31,26 @@ partial class GameOverForm
     /// </summary>
     private void InitializeComponent()
     {
-        pictureBox1 = new System.Windows.Forms.PictureBox();
+        gameOverPicture = new System.Windows.Forms.PictureBox();
         closeButton = new System.Windows.Forms.Button();
         titling = new System.Windows.Forms.Label();
         panel1 = new System.Windows.Forms.Panel();
         statsText = new System.Windows.Forms.Label();
         labelReason = new System.Windows.Forms.Label();
         labelStats = new System.Windows.Forms.Label();
-        ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)gameOverPicture).BeginInit();
         panel1.SuspendLayout();
         SuspendLayout();
         // 
-        // pictureBox1
+        // gameOverPicture
         // 
-        pictureBox1.BackgroundImage = global::Lab3.UI.Properties.Resources.WinPig;
-        pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-        pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
-        pictureBox1.Location = new System.Drawing.Point(0, 0);
-        pictureBox1.Name = "pictureBox1";
-        pictureBox1.Size = new System.Drawing.Size(331, 324);
-        pictureBox1.TabIndex = 0;
-        pictureBox1.TabStop = false;
+        gameOverPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+        gameOverPicture.Dock = System.Windows.Forms.DockStyle.Left;
+        gameOverPicture.Location = new System.Drawing.Point(0, 0);
+        gameOverPicture.Name = "gameOverPicture";
+        gameOverPicture.Size = new System.Drawing.Size(331, 324);
+        gameOverPicture.TabIndex = 0;
+        gameOverPicture.TabStop = false;
         // 
         // closeButton
         // 
@@ -126,9 +125,9 @@ partial class GameOverForm
         Controls.Add(panel1);
         Controls.Add(closeButton);
         Controls.Add(titling);
-        Controls.Add(pictureBox1);
+        Controls.Add(gameOverPicture);
         Text = "Победа!!!";
-        ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+        ((System.ComponentModel.ISupportInitialize)gameOverPicture).EndInit();
         panel1.ResumeLayout(false);
         ResumeLayout(false);
     }
@@ -145,7 +144,7 @@ partial class GameOverForm
 
     private System.Windows.Forms.Label titling;
 
-    private System.Windows.Forms.PictureBox pictureBox1;
+    private System.Windows.Forms.PictureBox gameOverPicture;
 
     #endregion
 }

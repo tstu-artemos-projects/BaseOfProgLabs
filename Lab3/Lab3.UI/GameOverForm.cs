@@ -30,7 +30,11 @@ public partial class GameOverForm : Form
             form.titling.Text = "Вы проиграли(";
             form.closeButton.Text = "Хм ну плохо";
             form.labelReason.Text = "Причина: " + defeatReason;
-            form.pictureBox1.Image = Properties.Resources.DefeatPig;
+            form.gameOverPicture.BackgroundImage = Properties.Resources.DefeatPig;
+        }
+        else
+        {
+            form.gameOverPicture.BackgroundImage = Properties.Resources.WinPig;
         }
         form.statsText.Text = $"- Книг продано: {stats.BooksSold}\n" +
                               $"- Ошибок выявлено: {stats.MismatchCaught}\n" +
